@@ -63,7 +63,7 @@ Desenvolvedor | Thumbnail
 [Alex](https://github.com/lexcaarvalho) | <img src="https://avatars0.githubusercontent.com/u/26251621?s=460&v=4" width="100"/>
 [Barreto](https://github.com/Kicaras) | <img src="https://avatars2.githubusercontent.com/u/22755810?s=460&v=4" width="100"/>
 [Klerison Lopes](https://github.com/klerisonlopes) | <img src="https://avatars1.githubusercontent.com/u/32913558?s=460&v=4" width="100"/>
-
+[Lucas Gustavo](https://github.com/Lucgusta) | <img src="https://avatars2.githubusercontent.com/u/38702045?s=460&v=4" width="100"/>
 
 
 
