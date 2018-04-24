@@ -27,8 +27,9 @@ Descrição | Versão
 
 Descrição | Endereço
 --------- | ------
-Back-end | https://github.com/01lucas-costa/anjosderua
-App Mobile | 
+Front-end | https://github.com/learnjsfatec/FrontEnd-AnjosdeRua
+Back-end | https://github.com/learnjsfatec/BackEnd-AnjosdeRua
+App Mobile | https://github.com/learnjsfatec/app-anjosderua
 Servidor Teste | 
 Servidor Produção | 
 Gerencia de Projetos | https://trello.com/b/z5EaxWkK/anjos-de-rua
