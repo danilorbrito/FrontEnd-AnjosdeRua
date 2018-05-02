@@ -2,18 +2,12 @@ import Vue from 'vue'
 import App from './App'
 import Vuex from 'vuex'
 import router from './router'
-import AtUI from 'at-ui'
 
 Vue.config.productionTip = false
-
 Vue.use(Vuex)
-Vue.use(AtUI)
-
 import VuexStore from './store'
 const store = new Vuex.Store(VuexStore)
-
-import 'at-ui-style'  
-
+require('../node_modules/material-design-icons/iconfont/material-icons.css')
 
 /* eslint-disable no-new */
 new Vue({
