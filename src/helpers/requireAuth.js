@@ -1,6 +1,6 @@
 function requireAuth (to, from, next)
 {
-  let loggedIn = false
+  let loggedIn = true
 
   if (loggedIn)
   {
