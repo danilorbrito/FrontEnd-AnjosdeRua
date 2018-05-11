@@ -8,8 +8,6 @@ Site da Ong de resgate e adoção de animais
 
 Descrição | Versão
 --------- | ------:
-[at-ui](https://at-ui.github.io/at-ui/#/zh) | "^1.3.3"
-[at-ui-style](https://at-ui.github.io/at-ui/#/zh) | "^1.5.1"
 [axios](https://github.com/axios/axios) | "^0.18.0"
 [material-design-icons](https://material.io/icons/) | "^3.0.1"
 [vue](https://vuejs.org/) | "^2.5.2"
