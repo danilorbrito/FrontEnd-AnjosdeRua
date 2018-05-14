@@ -1,6 +1,6 @@
 <template lang="pug">
     #form
-        h1 Animais
+        h3 Animais
         input(placeholder="Id", v-if="item.id", v-model="item.id")
 
         div.d-flex
@@ -21,46 +21,48 @@
             input(type="radio", name="sexo", value="f", :checked=" item.sexo == 'f' ", v-model="item.sexo"  )
 
         .uploads
-            img(src="../../../assets/bg.jpg", width="110")
-            i.material-icons.trash close
+            div(v-for="i in imagens")
+                img(:src="i.src", width="110")
+                i.material-icons.trash(@click="removeImage(i.id)") close
 
-            img(src="../../../assets/bg.jpg", width="110")
-            i.material-icons.trash close
-            
-            img(src="../../../assets/bg.jpg", width="110")
-            i.material-icons.trash close
-            
-            img(src="../../../assets/bg.jpg", width="110")
-            i.material-icons.trash close
-            
-            img(src="../../../assets/bg.jpg", width="110")
-            i.material-icons.trash close
-            
-            img(src="../../../assets/bg.jpg", width="110")
-            i.material-icons.trash close
-            
-        p.link Adicionar Imagem
+        form#imagens(enctype="multipart/form-data")
+            input#file(type="file" name="arquivo", v-show="false", @change="saveImage")
 
-        .btn.success(v-if="!item.id") Salvar Informações
-        .btn.warning(v-if="item.id") Atualizar Informações
+        label(for="file").link Adicionar Imagem
+
+        .btn.success(v-if="!item.id", @click="saveAnimal(item)") Salvar Informações
+        .btn.warning(v-if="item.id", @click="updateAnimal(item)") Atualizar Informações
 
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
+
 	export default {
         name: 'ReadAnimal',
         props:["item"],
 		data(){
 			return{
-				uploads:[]
+                imagens:[]
 			}
         },
         mounted()
         {
             //buscar as imagens do animal
+            //loadImages(item.id).then(r => {
+                this.imagens.push({id:1, src:require("../../../assets/bg.jpg")},{id:2, src:require("../../../assets/bg.jpg")})
+            //})
         },
 		methods:{
-		
+            ...mapActions([
+                'loadImages',
+                'saveImage',
+                'removeImage',
+                'saveAnimal',
+                'deleteAnimal',
+                'updateAnimal',
+                'loadAnimais'
+            ]),
 		}
 	}
 </script>
@@ -92,7 +94,9 @@
         font-weight bold
         cursor pointer
         font-size 12px
-        margin-top 10px
+        margin-top 3px
+        margin-bottom 10px
+        display block
 
     .d-flex
         display flex
