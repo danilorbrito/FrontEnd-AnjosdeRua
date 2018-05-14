@@ -12,12 +12,21 @@
                     p(@click="$emit('service','Denúncias')") Denúncias
                     p(@click="$emit('service','Associados')") Associados
                     p(@click="$emit('service','Ações promovidas')") Ações promovidas
+                    p(@click="sair") Sair
 
 </template>
 
 <script>
 	export default {
-		name: 'NavBar'
+        name: 'NavBar',
+        methods:{
+            sair()
+            {
+                //remover token da store
+                //redirecionar
+                console.log("deslogar")
+            }
+        }
 	}
 </script>
 
