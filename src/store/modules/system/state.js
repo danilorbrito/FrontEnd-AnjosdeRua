@@ -1,5 +1,5 @@
 export default { 
 	user:{},
 	token:{},
-	api:'http://localhost:3030/'
+	api:'http://httpbin.org/'
 }

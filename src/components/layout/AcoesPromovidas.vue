@@ -3,12 +3,13 @@
         h1 Ações Promovidas pela Ong
         
         section(style="display:flex;flex-wrap:wrap;justify-content:space-around")
-            Circulo(title="Projeto adote um amigo")
-            Circulo(title="Evento de caridade")
-            Circulo(title="Coleta de rações")
-            Circulo(title="Reunião com parceiros")
-            Circulo(title="Novas parcerias")
-            Circulo(title="Evento mensal de arrec...")
+            Circulo(:acao="teste")
+            Circulo(:acao="teste")
+            Circulo(:acao="teste")
+            Circulo(:acao="teste")
+            Circulo(:acao="teste")
+            Circulo(:acao="teste")
+
 
 </template>
 
@@ -16,9 +17,20 @@
     import Circulo from '../share/Circulo.vue'
 
 	export default {
-		name: 'AcoesPromovidas',
+        name: 'AcoesPromovidas',
+        data(){
+            return{
+                teste:{
+                    id:'4322',
+                    title:'Projeto adote um amigo'
+                }
+            }
+        },
         components:{
             Circulo
+        },
+        mounted(){
+            //buscar todas ações promovidas, no banco
         }
 	}
 </script>

@@ -1,5 +1,6 @@
 <template lang="pug">
   div
+    ModalAcoes
     Header
 
     .groupInfo
@@ -17,11 +18,12 @@
   import QuemSomos from './layout/QuemSomos'
   import AcoesPromovidas from './layout/AcoesPromovidas'
   import Info from './share/Info'
+  import ModalAcoes from './share/ModalAcoes'
 
   export default {
     name: 'Home',
     components:{
-      Header, QuemSomos, AcoesPromovidas, Info
+      Header, QuemSomos, AcoesPromovidas, Info, ModalAcoes
     }
   }
 </script>
@@ -36,5 +38,6 @@
       width 90%
       margin auto  
       flex-direction row
+
 
 </style>
