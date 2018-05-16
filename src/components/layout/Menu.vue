@@ -8,24 +8,37 @@
             label.close(for="mobile")
                 i.material-icons close
 
-            a.link(href="#") Ações Promovidas
-            a.link(href="#") Adoção
-            a.link(href="#") Denúncia
-            a.link.active(href="#") Área Restrita
-        
+            span.link(@click="scroll('quemsomos')") Quem Somos
+            span.link(@click="scroll('acoespromovidas')") Ações Promovidas
+            span.link(@click="scroll('adocao')") Adoção
+            span.link(@click="scroll('denuncia')") Denúncia
+
+            <form action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post">
+                <input type="hidden" name="currency" value="BRL" />
+                <input type="hidden" name="receiverEmail" value="klerisonpe@gmail.com" />
+                <input type="hidden" name="iot" value="button" />
+                button.link.active Doação
+            </form>
 </template>
 
 <script>
     export default {
         name: 'Menu',
-        components:{
-
+        methods:{
+            scroll( id )
+            {
+                document.getElementById(id).scrollIntoView({behavior: "smooth"})
+            }
         }
     }
 </script>
 
 
-<style lang="stylus">
+<style lang="stylus" scoped>
+    button
+        outline none 
+        border none
+
     .active
         background orange 
         border-radius 3px
@@ -51,6 +64,7 @@
     .link
         color #fff
         font-size 1.6rem
+        cursor pointer
 
     label#btnOpenMenu
         background-color #C6480A
