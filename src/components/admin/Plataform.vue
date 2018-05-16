@@ -6,7 +6,7 @@
 
             input.search(@keyup="search", v-model="busca", placeholder="Pesquisar")
 
-            .btn.success(@click="$emit('open')" ) Cadastrar
+            .btn.success(@click="$emit('open')", v-if="!dados[0].delator" ) Cadastrar
         
         .plataform-content
             table(border="1")
@@ -78,6 +78,6 @@
 	}
 </script>
 
-<style lang="stylus">
+<style lang="stylus" >
 	@import '../../styl/Table.styl'
 </style>

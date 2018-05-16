@@ -26,7 +26,7 @@
                 i.material-icons.trash(@click="removeImage(i.id)") close
 
         form#imagens(enctype="multipart/form-data")
-            input#file(type="file" name="arquivo", v-show="false", @change="saveImage")
+            input#file(type="file" name="arquivo", v-show="false", @change="uploading")
 
         label(for="file").link Adicionar Imagem
 
@@ -63,6 +63,16 @@
                 'updateAnimal',
                 'loadAnimais'
             ]),
+            uploading(e)
+            {
+                let form = e.currentTarget.parentNode
+                let dados= new FormData(form)
+        
+                this.saveImage(dados).then(r => {
+                    //carregar a imagem junto das outras, com novo id
+                    form.reset()
+                })
+            }
 		}
 	}
 </script>
@@ -72,6 +82,7 @@
     .uploads
         width 300px
         overflow-x auto
+        overflow-y hidden
         height 90px
         display flex
         margin auto
