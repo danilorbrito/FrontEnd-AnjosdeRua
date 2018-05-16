@@ -7,6 +7,7 @@ export default {
 				nome:'batman', 
 				sexo:"f", 
 				email:"email@email.com", 
+				telefones:[{id:1,numero:'34353434'},{id:2,numero:'6754'}],
 				pass:"123",
 				endereco:{rua:'rua1',numero:'100',bairro:'bairro',cidade:'matão',estado:'sp',cep:'200'}
 			},

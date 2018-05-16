@@ -34,16 +34,13 @@ export default {
 		//})
 	},
 
-
 	loadImages (context, idAnimal ) {
 		return axios.post(`${context.getters.getApi}imagens/${id}`, context.getters.getToken )
 	},
 
 	//form data
-	saveImage (context, ref ) {
-		let form = ref.currentTarget.parentNode
-		let dados= new FormData(form)
-		//axios.post(`${context.getters.getApi}post`, imagem, context.getters.getToken ).then( r=>form.reset() )
+	saveImage (context, formdata ) {
+		return axios.post(`${context.getters.getApi}imagens`, formdata, context.getters.getToken )
 	},
 
 	removeImage (context, id) {
