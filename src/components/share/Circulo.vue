@@ -1,19 +1,26 @@
 <template lang="pug">
     .circulo
-        p {{ title }}
-        .btnAcoes Detalhes
+        p {{ acao.title }}
+        .btnAcoes(@click="callModal(acao)") Detalhes
 
 </template>
 
 <script>
+    import { EventBus } from '../../helpers/eventBus.js'
+
 	export default {
         props:{
-            title:{
-                type: String,
+            acao:{
+                type: Object,
                 required: true
             }
         },
-		name:'circulo'
+        name:'circulo',
+        methods:{
+            callModal(){
+                EventBus.$emit('showAction', this.acao)
+            }
+        }
 	}
 </script>
 
@@ -30,10 +37,12 @@
         flex-direction column
         text-align center
         padding 16px
-        background-color rgba(0,0,0,0.400)
+        box-shadow 3px 3px 3px #ccc
+        background-color rgba(255,255,255,0.400)
         & p
-            color #fff
+            color #3d3d3d
             text-shadow 9px 9px 9px #000
+            font-size 1.5em
 
     .btnAcoes
         background-color #C6480A

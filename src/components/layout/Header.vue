@@ -66,9 +66,11 @@
             height 100%
 
     #logo
+        margin-top 10px
+        background url(../../assets/logo.png) center center no-repeat
+        background-size 120px
         width 40%
-        height 100%
-        outline 1px solid #C6480A
+        height 100px
 
     .slogan
         padding-top 30vh
@@ -93,12 +95,18 @@
             & p
                 font-size 1.8rem
 
+        #logo
+            margin-top 30px
+            background-size 200px
+
     @media screen and (min-width: 768px)
         #top 
             position static
 
         #logo
-            width 20%
+            width 22%
+            margin-top 15px
+            background-size 150px
 
     @media screen and (min-width: 992px)
         #top
@@ -111,5 +119,9 @@
             & p
                 font-size 2rem
 
-    @media screen and (min-width: 1200px){}
+    @media screen and (min-width: 1200px)
+        #logo
+            margin-top 50px
+            background-size 230px
+
 </style>
