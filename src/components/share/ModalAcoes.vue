@@ -4,8 +4,10 @@
             .modal
                 .modal-inset
                     .button.close(@click="status=false") x
+                    h1 {{acao.titulo}}
                     .modal-body
-                        slot(name="body")    
+                        div(v-html="acao.texto") 
+
         div(:class="{'modal-overlay':true, 'state-show':status}")
             
 </template>
@@ -14,18 +16,21 @@
     import { EventBus } from '../../helpers/eventBus.js'
 
 	export default {
-        //props:["status"],
         data()
         {
             return{
-                status:false
+                status:false,
+                acao:{
+                    titulo:'',
+                    text:''
+                }
             }
         },
         name: 'Modal',
         mounted(){
             EventBus.$on('showAction', acao => {
+                this.acao = acao
                 this.status = true
-                console.log( JSON.stringify(acao) )
             })
         }
 	}

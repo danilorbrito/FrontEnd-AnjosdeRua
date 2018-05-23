@@ -2,10 +2,11 @@
 	#panel
 		Modal(:status="modal", @close="modal=false")
 			div(slot="body")
-				ReadAnimal(v-if="service.id=='Animais'", :item="service.item")
-				ReadAssociado(v-if="service.id=='Associados'", :item="service.item")
-				Denuncia(v-if="service.id=='Denúncias'", :item="service.item")
-				Adocoes(v-if="service.id=='Adoções'", :item="service.item", @showAssociado="verAssociado", @showAnimal="verAnimal")
+				ModalAnimal(v-if="service.id=='Animais'", :item="service.item")
+				ModalAssociado(v-if="service.id=='Associados'", :item="service.item")
+				ModalDenuncia(v-if="service.id=='Denúncias'", :item="service.item")
+				ModalAdocoes(v-if="service.id=='Adoções'", :item="service.item", @showAssociado="verAssociado", @showAnimal="verAnimal")
+				ModalAcoesPromovidas(v-if="service.id=='Ações promovidas'", :item="service.item")
 
 		NavBar(@service="setService")
 		Plataform(:service="service.id", @open="service.item={},service.type='insert',modal=true", :head="dataTable.head", :dados="dataTable.body", @actions="operacao")
@@ -16,15 +17,16 @@
 	import NavBar from './admin/NavBar'
 	import Plataform from './admin/Plataform'
 	import Modal from './admin/Modal'
-	import ReadAnimal from './admin/Modais/ReadAnimal'
-	import ReadAssociado from './admin/Modais/ReadAssociado'
-	import Denuncia from './admin/Modais/Denuncia'
-	import Adocoes from './admin/Modais/Adocoes'
+	import ModalAnimal from './admin/Modais/ModalAnimal'
+	import ModalAssociado from './admin/Modais/ModalAssociado'
+	import ModalDenuncia from './admin/Modais/ModalDenuncia'
+	import ModalAdocoes from './admin/Modais/ModalAdocoes'
+	import ModalAcoesPromovidas from './admin/Modais/ModalAcoesPromovidas'
 	import {mapActions} from 'vuex'
 
 	export default {
 		name: 'admin',
-		components:{NavBar, Plataform, Modal, ReadAnimal,ReadAssociado,Denuncia,Adocoes},
+		components:{NavBar, Plataform, Modal, ModalAnimal,ModalAssociado,ModalDenuncia,ModalAdocoes,ModalAcoesPromovidas},
 		data(){
 			return{
 				service:{
@@ -37,10 +39,14 @@
 		},
 		mounted()
 		{
-			this.setService("Animais")
+			let user = {
+				"login":"chefao01",
+				"password":"chefao01"
+			}
+			this.loginUser(user).then(r=> this.setService("Animais"))
 		},
 		methods:{
-			...mapActions(['deleteAnimal','deleteAssociado','deleteDenuncia','deleteAdocao']),
+			...mapActions(['deleteAnimal','deleteAssociado','deleteDenuncia','deleteAdocao','deleteAcoesPromovidas']),
 			operacao(type, id)
 			{
 				if(type=="trash" && confirm("tem certeza?") )
@@ -51,9 +57,7 @@
 						case 'Adoções':this.deleteAdocao(id);break
 						case 'Denúncias':this.deleteDenuncia(id);break
 						case 'Associados':this.deleteAssociado(id);break
-/*
-						case 'Ações promovidas':this.deleteAnimal(id);break
-*/
+						case 'Ações promovidas':this.deleteAcoesPromovidas(id);break
 						default:console.warn("trash desconhecido");break
 					}
 				}
@@ -64,8 +68,7 @@
 					this.modal=true
 				}
 			},
-
-			...mapActions(['loadAnimais','loadAdocoes','loadAssociados','loadDenuncias']),
+			...mapActions(['loginUser','loadAnimais','loadAdocoes','loadAssociados','loadDenuncias','loadAcoesPromovidas']),
 			setService(s)
 			{
 				//event bus para remover filtro da plataform 	
@@ -92,8 +95,8 @@
 					break
 
 					case 'Ações promovidas':
-						this.dataTable.head = ["Titulo", "Descrição"]
-						this.dataTable.body = this.$store.getters.getAnimais
+						this.dataTable.head = ["Titulo", "Descrição","Data"]
+						this.loadAcoesPromovidas().then( a=> this.dataTable.body = a)
 					break
 
 					default:
