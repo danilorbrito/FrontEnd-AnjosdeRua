@@ -1,0 +1,77 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    background-color:#eee;
+}
+
+#parentEditor {
+    width: 550px;
+    border: 1px solid #ccc;
+    border-radius:3px;
+    padding-bottom:2px;
+    background-color:#fff;
+}
+
+#painelEditor{
+    padding:10px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    height:50px;
+    background-color:#f6fafe;
+}
+
+.btnColor{
+    font-size:15px;
+    font-weight: bold;
+    outline: none;
+    border:none;
+    cursor:pointer;
+    width:25px;
+    height:25px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content: center;
+}
+#fontColor{
+    color:#3c8dbc;
+}
+
+#backColor{
+    color:orange;
+}
+
+label[for="cores"]{
+    width:10px;
+    height:10px;
+    background-color:#3c8dbc;
+    border-radius:20px;
+}
+
+#editor {
+    padding: 10px;
+    height:250px;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+.demo-icon{
+    cursor:pointer;
+    color:#3d3d3d;
+}
+
+.demo-icon:hover{
+    color:gray;
+}
+
+#inputFontSize{
+    border:1px solid #ccc;
+    outline:none;
+    border-radius:3px;
+    padding:2px;
+    color:#3d3d3d;
+    font-size: 9px;
+}
