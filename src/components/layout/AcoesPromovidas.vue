@@ -3,34 +3,29 @@
         h1 Ações Promovidas pela Ong
         
         section(style="display:flex;flex-wrap:wrap;justify-content:space-around")
-            Circulo(:acao="teste")
-            Circulo(:acao="teste")
-            Circulo(:acao="teste")
-            Circulo(:acao="teste")
-            Circulo(:acao="teste")
-            Circulo(:acao="teste")
-
+            Circulo(v-for="a in acoes", :key="a.id", :acao="a")
 
 </template>
 
 <script>
     import Circulo from '../share/Circulo.vue'
+    import {mapActions} from 'vuex'
 
 	export default {
         name: 'AcoesPromovidas',
         data(){
             return{
-                teste:{
-                    id:'4322',
-                    title:'Projeto adote um amigo'
-                }
+                acoes:[]
             }
         },
         components:{
             Circulo
         },
         mounted(){
-            //buscar todas ações promovidas, no banco
+            this.loadAcoesPromovidas().then(a=>this.acoes=a)
+        },
+        methods:{
+            ...mapActions(['loadAcoesPromovidas'])
         }
 	}
 </script>

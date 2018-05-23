@@ -1,6 +1,6 @@
 <template lang="pug">
     .circulo
-        p {{ acao.title }}
+        p {{ acao.titulo }}
         .btnAcoes(@click="callModal(acao)") Detalhes
 
 </template>

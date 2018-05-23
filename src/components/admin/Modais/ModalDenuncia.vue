@@ -3,8 +3,8 @@
         h3 Denúncia
         p {{item.descricao}}
         input(placeholder="Delator", v-model="item.delator")
-        input(placeholder="Descrição do local", v-model="item.descricaoLocal")
-        input(placeholder="Data da denúncia", v-model="item.datahora")
+        input(placeholder="Descrição do local", v-model="item.descricao_local")
+        input(placeholder="Data da denúncia", v-model="item.dt_denuncia")
 
 </template>
 

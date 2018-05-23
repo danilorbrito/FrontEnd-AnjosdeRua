@@ -1,7 +1,7 @@
 <template lang="pug">
     #form
         h3 Animais
-        input(placeholder="Id", v-if="item.id", v-model="item.id")
+        input(v-show="false", v-model="item.id")
 
         div.d-flex
             input.m-right(placeholder="Nome", v-model="item.nome")
@@ -20,15 +20,18 @@
             span Fêmea   
             input(type="radio", name="sexo", value="f", :checked=" item.sexo == 'f' ", v-model="item.sexo"  )
 
-        .uploads
+        p(style='text-align:center,cursor:pointer', v-if="item.id && imagens.length == 0", @click="showImages") Carregar Imagens
+
+        .uploads(v-if="item.id && imagens.length > 0")
             div(v-for="i in imagens")
-                img(:src="i.src", width="110")
+                img(:src="'http://soriano.esy.es/app/client/assets/imagens/animais/'+i.nome_imagem", width="110")
                 i.material-icons.trash(@click="removeImage(i.id)") close
 
         form#imagens(enctype="multipart/form-data")
+            input(name="id_animal", v-show="false", v-model="item.id")
             input#file(type="file" name="arquivo", v-show="false", @change="uploading")
 
-        label(for="file").link Adicionar Imagem
+        label(for="file", v-if="item.id").link Adicionar Imagem
 
         .btn.success(v-if="!item.id", @click="saveAnimal(item)") Salvar Informações
         .btn.warning(v-if="item.id", @click="updateAnimal(item)") Atualizar Informações
@@ -39,19 +42,21 @@
     import { mapActions } from 'vuex'
 
 	export default {
-        name: 'ReadAnimal',
-        props:["item"],
+        name: 'ModalAnimal',
+        props:{
+            item:{
+                type:Object
+            }
+        },
 		data(){
 			return{
                 imagens:[]
 			}
         },
-        mounted()
-        {
-            //buscar as imagens do animal
-            //loadImages(item.id).then(r => {
-                this.imagens.push({id:1, src:require("../../../assets/bg.jpg")},{id:2, src:require("../../../assets/bg.jpg")})
-            //})
+        mounted(){
+            let check = setInterval(()=>{
+                if(this.imagens.length > 0)if(this.imagens[0].id_foreign != this.item.id) this.imagens=[]
+            },100)
         },
 		methods:{
             ...mapActions([
@@ -59,17 +64,18 @@
                 'saveImage',
                 'removeImage',
                 'saveAnimal',
-                'deleteAnimal',
                 'updateAnimal',
-                'loadAnimais'
             ]),
+            showImages(){
+                this.loadImages(this.item.id).then(r => this.imagens = r.data.data )
+            },
             uploading(e)
             {
                 let form = e.currentTarget.parentNode
                 let dados= new FormData(form)
         
                 this.saveImage(dados).then(r => {
-                    //carregar a imagem junto das outras, com novo id
+                    this.showImages()
                     form.reset()
                 })
             }

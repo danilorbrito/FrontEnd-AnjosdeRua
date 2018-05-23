@@ -1,5 +1,5 @@
 export default { 
 	user:{},
 	token:{},
-	api:'http://httpbin.org/'
+	api:'http://soriano.esy.es/'
 }

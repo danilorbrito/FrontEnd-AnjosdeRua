@@ -18,27 +18,45 @@
             
 
         #conversa(v-if="getAssociado.id")
-            .msg.left Texto da mensagem bem aqui
-            .msg.left Texto da mensagem bem aqui Texto da mensagem bem aqui Texto da mensagem bem aqui
-            .msg.left Texto da mensagem bem aqui Texto da mensagem bem aqui Texto da mensagem bem aqui
-            .msg.right Texto da mensagem bem aqui
-            .msg.right Texto da mensagem bem aqui Texto da mensagem bem aqui Texto da mensagem bem aqui
-            .msg.right Texto da mensagem bem aqui
-            .msg.right Texto da mensagem
-            .msg.right Texto da mensagem bem aqui
+            .msg(v-for="m in mensagens", :class="{left:m.remetente!='admin', right:m.remetente=='admin'}" ) {{m.mensagem}}
 
-        input(placeholder="Digite aqui sua mensagem",style="border-top:1px solid #ccc", v-if="getAssociado.id")
+        input(placeholder="Digite aqui sua mensagem", style="border-top:1px solid #ccc", v-if="getAssociado.id", @keyup.enter="send")
 
         .btn.success(v-if="!item.id") Salvar Informações
 
 </template>
 
 <script>
+    import {mapActions} from 'vuex'
+
 	export default {
         name: 'Adocoes',
         props:{
             item:{
                 type:Object
+            }
+        },
+        data(){
+            return{
+                mensagens: []
+            }
+        },
+        beforeUpdate(){
+            this.getMessages()
+        },
+        methods:{
+            ...mapActions(['loadMessages','saveMessage','checkMessage']),
+            getMessages(){
+                this.loadMessages(this.item.id).then(r => {
+                    this.mensagens = r.data.data
+                })
+            },
+            send(e)
+            {
+                this.saveMessage({remetente:'admin',mensagem:e.target.value,datahora:'',id_adocao:this.item.id}).then(r=>{
+                    this.checkMessage(this.item.id)
+                    e.target.value=''
+                })
             }
         },
         computed:{
