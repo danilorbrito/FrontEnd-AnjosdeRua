@@ -3,48 +3,48 @@ import axios from 'axios'
 export default { 
 	loadAnimais (context) {
 		return new Promise( (resolve, reject) => {
-			//axios.get(`${context.getters.getApi}animais`, context.getters.getToken ).then( resp => {
-				//context.commit('SET_ANIMAIS', resp.data.data)
+			axios.get(`${context.getters.getApi}animais`, context.getters.getToken ).then( resp => {
+				context.commit('SET_ANIMAIS', resp.data.data)
 				resolve(context.getters.getAnimais)
-			//})
+			})
 		})
 	},
 
 	saveAnimal (context, animal) {
-		/*
-		axios.post(`${context.getters.getApi}animais`, animal, context.getters.getToken ).then( resp => {
-			context.dispatch('loadAnimais')
+		animal.adotado=0
+		return new Promise( (resolve, reject) => {
+			axios.post(`${context.getters.getApi}animais`, animal, context.getters.getToken ).then( resp => {
+				context.dispatch('loadAnimais')
+				resolve(resp.data.data.id)
+			})
 		})
-		*/
-		console.log( JSON.stringify(animal) )
 	},
 
 	updateAnimal (context, animal) {
-		/*
-		axios.put(`${context.getters.getApi}animais/${animal.id}`, animal, context.getters.getToken ).then( resp => {
+		axios.put(`${context.getters.getApi}animais`, animal, context.getters.getToken ).then( resp => {
+			console.log( resp )
 			context.dispatch('loadAnimais')
 		})
-		*/
-		console.log( JSON.stringify(animal) )
 	},
 
 	deleteAnimal (context, id) {
-		//axios.delete(`${context.getters.getApi}animais/${id}`, context.getters.getToken ).then( resp => {
+		axios.delete(`${context.getters.getApi}animais/${id}`, context.getters.getToken ).then( resp => {
 			context.dispatch('loadAnimais')
-		//})
+		})
 	},
 
+
 	loadImages (context, idAnimal ) {
-		return axios.post(`${context.getters.getApi}imagens/${id}`, context.getters.getToken )
+		return axios.get(`${context.getters.getApi}imagens/animais/${idAnimal}`, context.getters.getToken )
 	},
 
 	//form data
 	saveImage (context, formdata ) {
-		return axios.post(`${context.getters.getApi}imagens`, formdata, context.getters.getToken )
+		return axios.post(`${context.getters.getApi}imagens/animais`, formdata, context.getters.getToken )
 	},
 
 	removeImage (context, id) {
-		//return axios.delete(`${context.getters.getApi}imagens/${id}`, context.getters.getToken )
+		return axios.delete(`${context.getters.getApi}imagens/${id}`, context.getters.getToken )
 	}
 
 }
