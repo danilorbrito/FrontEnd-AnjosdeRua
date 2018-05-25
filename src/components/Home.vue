@@ -10,6 +10,8 @@
 
     QuemSomos
     AcoesPromovidas
+    adocao
+    denuncia
     
 </template>
 
@@ -19,11 +21,13 @@
   import AcoesPromovidas from './layout/AcoesPromovidas'
   import Info from './share/Info'
   import ModalAcoes from './share/ModalAcoes'
+  import adocao from './layout/adocao'
+  import denuncia from './layout/denuncia'
 
   export default {
     name: 'Home',
     components:{
-      Header, QuemSomos, AcoesPromovidas, Info, ModalAcoes
+      Header, QuemSomos, AcoesPromovidas, Info, ModalAcoes, adocao, denuncia
     }
   }
 </script>
