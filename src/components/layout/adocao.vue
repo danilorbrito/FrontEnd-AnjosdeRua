@@ -10,27 +10,39 @@
             form.boxF(action="forumalario" method="post")
                 
                 label Nome:
-                    input(type="text")
+                    input(type="text", v-model="espera.nome")
 
                 label E-mail:
-                     input(type="text")
+                     input(type="text", v-model="espera.email")
 
                 label Telefone:
-                     input(type="text")
-
-                label CPF:   
-                     input(type="text")
+                     input(type="text", v-model="espera.telefone")
 
                 label Porte do pet desejado:
-                     input(type="text")
+                     input(type="text", v-model="espera.descricao_animal")
                     
-                button.enviar(type="button") Enviar dados
-                button.limpar(type="button") Limpar dados
+                button.enviar(type="button", @click="saveEspera(espera)") Enviar dados
 </template>
 
 <script>
+    import {mapActions} from 'vuex'
+    
 	export default {
-		name: 'doacao'
+        name: 'doacao',
+        data()
+        {
+            return{
+                espera:	{
+                    nome: "Pessoa",
+                    email: "mail@mail.com",
+                    telefone: "(00)00000000",
+                    descricao_animal: "Descrever as caracteristicas de seu animal pretendido"
+                }
+            }
+        },
+        methods:{
+            ...mapActions(['saveEspera'])
+        }
 	}
 </script>
 
@@ -111,10 +123,8 @@
                     background #fd3b3b
 
 
-
     @media screen and (min-width: 768px)
         #quemsomos section
             width 70%
-
 
 </style>

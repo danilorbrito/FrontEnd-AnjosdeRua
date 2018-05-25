@@ -2,7 +2,7 @@
 	#panel
 		Modal(:status="loading", @close="closeModal")
 			div(slot="body")
-				h1 Por favor, aguarde...
+				Loading
 
 		Modal(:status="modal", @close="closeModal")
 			div(slot="body")
@@ -11,6 +11,7 @@
 				ModalDenuncia(v-if="service.id=='Denúncias'", :item="service.item")
 				ModalAdocoes(v-if="service.id=='Adoções'", :item="service.item", @showAssociado="verAssociado", @showAnimal="verAnimal")
 				ModalAcoesPromovidas(v-if="service.id=='Ações promovidas'", :item="service.item")
+				ModalListaEspera(v-if="service.id=='Lista de espera'", :item="service.item")
 
 		NavBar(@service="setService")
 		Plataform(:service="service.id", @open="service.item={},service.type='insert',modal=true", :head="dataTable.head", :dados="dataTable.body", @actions="operacao")
@@ -21,17 +22,19 @@
 	import NavBar from './admin/NavBar'
 	import Plataform from './admin/Plataform'
 	import Modal from './admin/Modal'
+	import Loading from './share/Loading'
 	import ModalAnimal from './admin/Modais/ModalAnimal'
 	import ModalAssociado from './admin/Modais/ModalAssociado'
 	import ModalDenuncia from './admin/Modais/ModalDenuncia'
 	import ModalAdocoes from './admin/Modais/ModalAdocoes'
 	import ModalAcoesPromovidas from './admin/Modais/ModalAcoesPromovidas'
+	import ModalListaEspera from './admin/Modais/ModalListaEspera'
 	import {mapActions} from 'vuex'
 	import { EventBus } from '../helpers/eventBus.js'
 
 	export default {
 		name: 'admin',
-		components:{NavBar, Plataform, Modal, ModalAnimal,ModalAssociado,ModalDenuncia,ModalAdocoes,ModalAcoesPromovidas},
+		components:{NavBar, Plataform, Modal, ModalListaEspera,ModalAnimal,ModalAssociado,ModalDenuncia,ModalAdocoes,ModalAcoesPromovidas,Loading},
 		data(){
 			return{
 				service:{
@@ -52,7 +55,7 @@
 			this.loginUser(user).then(r=> this.setService("Animais"))
 		},
 		methods:{
-			...mapActions(['deleteAnimal','deleteAssociado','deleteDenuncia','deleteAdocao','deleteAcoesPromovidas']),
+			...mapActions(['deleteAnimal','deleteEspera','deleteAssociado','deleteDenuncia','deleteAdocao','deleteAcoesPromovidas']),
 			closeModal()
 			{
 				this.modal=false
@@ -69,6 +72,7 @@
 						case 'Denúncias':this.deleteDenuncia(id);break
 						case 'Associados':this.deleteAssociado(id);break
 						case 'Ações promovidas':this.deleteAcoesPromovidas(id);break
+						case 'Lista de espera':this.deleteEspera(id);break
 						default:console.warn("trash desconhecido");break
 					}
 				}
@@ -80,7 +84,7 @@
 					this.modal=true
 				}
 			},
-			...mapActions(['loginUser','loadAnimais','loadAdocoes','loadAssociados','loadDenuncias','loadAcoesPromovidas']),
+			...mapActions(['loginUser','loadAnimais','loadAdocoes','loadEsperas','loadAssociados','loadDenuncias','loadAcoesPromovidas']),
 			setService(s)
 			{
 				//event bus para remover filtro da plataform 	
@@ -110,6 +114,11 @@
 					case 'Ações promovidas':
 						this.dataTable.head = ["Titulo", "Descrição","Data"]
 						this.loadAcoesPromovidas().then( a=> {this.dataTable.body = a;this.loading=false})
+					break
+
+					case 'Lista de espera':
+						this.dataTable.head = ["Nome", "Telefone","Descricao"]
+						this.loadEsperas().then( a=> {this.dataTable.body = a;this.loading=false})
 					break
 
 					default:

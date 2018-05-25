@@ -6,7 +6,7 @@
 
             input.search(@keyup="search", v-model="busca", placeholder="Pesquisar")
 
-            .btn.success(@click="$emit('open')", v-if="!exibeBtn.delator" ) Cadastrar
+            .btn.success(@click="$emit('open')", v-if="!exibeBtn.delator && !exibeBtn.descricao_animal" ) Cadastrar
         
         .plataform-content
             table(border="1")
@@ -17,8 +17,8 @@
                 tbody#dados
                     tr(v-for="d in tabela", :key="d.id")
                         td {{ d.nome || d.descricao || d.titulo  || d.associado.nome}}
-                        td {{ d.raca || d.sexo || d.delator || stripHTML(d.texto)  || d.animal.nome  }}
-                        td {{ d.idade || d.email || d.descricaoLocal || d.novasmensagens || d.datahora }}
+                        td {{ d.raca || d.sexo || d.delator || stripHTML(d.texto)  || d.telefone || d.animal.nome  }}
+                        td {{ d.descricao_animal || d.idade || d.email || d.descricaoLocal || d.novasmensagens || d.datahora }}
                         td
                             .btn.read(@click="$emit('actions', 'read', d.id )") Detalhes
                             .btn.danger(@click="$emit('actions', 'trash', d.id )") Deletar
