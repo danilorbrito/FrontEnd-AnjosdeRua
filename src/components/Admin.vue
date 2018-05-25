@@ -1,6 +1,10 @@
 <template lang="pug">
 	#panel
-		Modal(:status="modal", @close="modal=false")
+		Modal(:status="loading", @close="closeModal")
+			div(slot="body")
+				h1 Por favor, aguarde...
+
+		Modal(:status="modal", @close="closeModal")
 			div(slot="body")
 				ModalAnimal(v-if="service.id=='Animais'", :item="service.item")
 				ModalAssociado(v-if="service.id=='Associados'", :item="service.item")
@@ -23,6 +27,7 @@
 	import ModalAdocoes from './admin/Modais/ModalAdocoes'
 	import ModalAcoesPromovidas from './admin/Modais/ModalAcoesPromovidas'
 	import {mapActions} from 'vuex'
+	import { EventBus } from '../helpers/eventBus.js'
 
 	export default {
 		name: 'admin',
@@ -34,7 +39,8 @@
 					item:{}
 				},
 				modal:false,
-				dataTable:{head:[],body:[]}
+				dataTable:{head:[],body:[]},
+				loading:false
 			}
 		},
 		mounted()
@@ -47,6 +53,11 @@
 		},
 		methods:{
 			...mapActions(['deleteAnimal','deleteAssociado','deleteDenuncia','deleteAdocao','deleteAcoesPromovidas']),
+			closeModal()
+			{
+				this.modal=false
+				if(this.service.id == 'Adoções')EventBus.$emit('stopInterval')
+			},
 			operacao(type, id)
 			{
 				if(type=="trash" && confirm("tem certeza?") )
@@ -64,6 +75,7 @@
 				
 				if(type=="read")
 				{
+					if(this.service.id == 'Adoções')EventBus.$emit('initInterval')
 					this.service.item = this.dataTable.body.filter( i => i.id == id )[0]
 					this.modal=true
 				}
@@ -72,31 +84,32 @@
 			setService(s)
 			{
 				//event bus para remover filtro da plataform 	
+				this.loading=true
 				switch(s)
 				{
 					case 'Animais':
 						this.dataTable.head = ["Nome", "Raça", "Idade"]
-						this.loadAnimais().then( a=> this.dataTable.body = a)
+						this.loadAnimais().then( a=> {this.dataTable.body = a;this.loading=false})
 					break
 
 					case 'Adoções':
 						this.dataTable.head = ["Associado", "Animal", "Novas Mensagens"]
-						this.loadAdocoes().then( a=> this.dataTable.body = a)
+						this.loadAdocoes().then( a=> {this.dataTable.body = a;this.loading=false})
 					break
 
 					case 'Denúncias':
 						this.dataTable.head = ["Descrição", "Delator", "Local"]
-						this.loadDenuncias().then( d=> this.dataTable.body = d)
+						this.loadDenuncias().then( d=> {this.dataTable.body = d;this.loading=false})
 					break
 
 					case 'Associados':
 						this.dataTable.head = ["Nome", "Sexo", "E-mail"]
-						this.loadAssociados().then( a=> this.dataTable.body = a)
+						this.loadAssociados().then( a=> {this.dataTable.body = a;this.loading=false})
 					break
 
 					case 'Ações promovidas':
 						this.dataTable.head = ["Titulo", "Descrição","Data"]
-						this.loadAcoesPromovidas().then( a=> this.dataTable.body = a)
+						this.loadAcoesPromovidas().then( a=> {this.dataTable.body = a;this.loading=false})
 					break
 
 					default:
