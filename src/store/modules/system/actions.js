@@ -18,5 +18,9 @@ export default {
 			})
 			.catch(err => reject(err))
 		})
+	},
+
+	loggout(context){
+		context.commit('SET_TOKEN', {} )
 	}
 }
