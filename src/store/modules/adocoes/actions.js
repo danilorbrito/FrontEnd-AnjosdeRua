@@ -40,14 +40,10 @@ export default {
 		axios.put(`${context.getters.getApi}mensagens/visualizada`, id_adocao,  context.getters.getToken )
 	},
 
-	getNotifications()
+	async getNotifications(context, id_adocao)
 	{
-		return new Promise( (resolve, reject) => {
-			axios.get(`${context.getters.getApi}mensagens/visualizada/admin/${id_adocao}`, context.getters.getToken ).then(r=>{
-				//total de mensagens que não tem o admin como remetente e não foram visualizadas
-				resolve(r)
-			})
-		})
+		let d = await axios.get(`${context.getters.getApi}mensagens/visualizar/admin/${id_adocao}`, context.getters.getToken )
+		return d.data.data.total
 	}
 
 }
