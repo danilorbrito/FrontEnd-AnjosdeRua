@@ -31,7 +31,7 @@
             input(name="id_animal", v-show="false", v-model="item.id")
             input#file(type="file" name="arquivo", v-show="false", @change="uploading")
 
-        label(for="file", v-if="item.id").link Adicionar Imagem
+        label(for="file", v-if="item.id").linkAddImage Adicionar Imagem
 
         .btn.success(v-if="!item.id", @click="saveAnimal(item)") Salvar Informações
         .btn.warning(v-if="item.id", @click="updateAnimal(item)") Atualizar Informações
@@ -106,7 +106,7 @@
             text-shadow 1px 3px 1px #fff
 
 
-    .link
+    .linkAddImage
         color blue
         font-weight bold
         cursor pointer

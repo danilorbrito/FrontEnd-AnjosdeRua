@@ -30,7 +30,7 @@
         background-color rgba(255,255,255,1)
 
         & h1
-            font-size 1.6em
+            font-size 2.6em
             text-align center
             color #C6480A
             text-transform uppercase
@@ -43,6 +43,7 @@
             margin auto
             color gray
             & p
+                font-size 2.0em
                 text-align center
                 letter-spacing 2px
 

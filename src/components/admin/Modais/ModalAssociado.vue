@@ -1,7 +1,7 @@
 <template lang="pug">
     #formAssociado
         h3 Associados
-        input(placeholder="Id", v-if="item.id", v-model="item.id")
+        input(placeholder="Id", v-show="false", v-model="item.id")
 
         div.d-flex
             input.m-right(placeholder="Nome", v-model="item.nome")

@@ -3,7 +3,7 @@
         label#btnOpenMenu.flex(for="mobile")
             i.material-icons menu
 
-        input#mobile(type="checkbox", hidden)
+        input#mobile(type="checkbox", v-show="false")
         nav#menu
             label.close(for="mobile")
                 i.material-icons close

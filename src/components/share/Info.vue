@@ -4,7 +4,7 @@
             i.material-icons {{icon}}
 
         h1 {{title}}
-        p {{text}}
+        h3 {{text}}
 
 </template>
 
