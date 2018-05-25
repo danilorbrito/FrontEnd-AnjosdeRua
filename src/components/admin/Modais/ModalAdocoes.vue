@@ -28,6 +28,7 @@
 
 <script>
     import {mapActions} from 'vuex'
+    import { EventBus } from '../../../helpers/eventBus.js'
 
 	export default {
         name: 'Adocoes',
@@ -38,14 +39,26 @@
         },
         data(){
             return{
-                mensagens: []
+                mensagens: [],
+                interval:null
             }
         },
-        beforeUpdate(){
-            this.getMessages()
+        mounted()
+        {
+            EventBus.$on('initInterval', () => this.initInterval() )
+            EventBus.$on('stopInterval', () => this.stopInterval() )
         },
         methods:{
             ...mapActions(['loadMessages','saveMessage','checkMessage']),
+            initInterval()
+            {
+                this.interval = setInterval( () => this.getMessages(), 1000)
+            },
+            stopInterval()
+            {
+                this.mensagens=[]
+                clearInterval(this.interval)
+            },
             getMessages(){
                 this.loadMessages(this.item.id).then(r => {
                     this.mensagens = r.data.data
@@ -54,7 +67,7 @@
             send(e)
             {
                 this.saveMessage({remetente:'admin',mensagem:e.target.value,datahora:'',id_adocao:this.item.id}).then(r=>{
-                    this.checkMessage(this.item.id)
+                    this.checkMessage({"id_adocao":this.item.id})
                     e.target.value=''
                 })
             }
