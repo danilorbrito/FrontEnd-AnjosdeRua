@@ -11,14 +11,20 @@ export default {
 	},
 
 	saveAssociado(context, associado) {
-		axios.post(`${context.getters.getApi}associados`, associado, context.getters.getToken ).then( resp => {
-			context.dispatch('loadAssociados')
+		return new Promise( (resolve, reject) => {
+			axios.post(`${context.getters.getApi}associados`, associado, context.getters.getToken ).then( resp => {
+				context.dispatch('loadAssociados')
+				resolve(resp)
+			})
 		})
 	},
 
 	updateAssociado(context, associado) {
-		axios.put(`${context.getters.getApi}associados`, associado, context.getters.getToken ).then( resp => {
-			context.dispatch('loadAssociados')
+		return new Promise( (resolve, reject) => {
+			axios.put(`${context.getters.getApi}associados`, associado, context.getters.getToken ).then( resp => {
+				context.dispatch('loadAssociados')
+				resolve(resp)
+			})
 		})
 	},
 
