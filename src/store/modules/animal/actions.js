@@ -21,9 +21,11 @@ export default {
 	},
 
 	updateAnimal (context, animal) {
-		axios.put(`${context.getters.getApi}animais`, animal, context.getters.getToken ).then( resp => {
-			console.log( resp )
-			context.dispatch('loadAnimais')
+		return new Promise( (resolve, reject) => {
+			axios.put(`${context.getters.getApi}animais`, animal, context.getters.getToken ).then( resp => {
+				context.dispatch('loadAnimais')
+				resolve(resp)
+			})
 		})
 	},
 
@@ -44,7 +46,7 @@ export default {
 	},
 
 	removeImage (context, id) {
-		return axios.delete(`${context.getters.getApi}imagens/${id}`, context.getters.getToken )
+		axios.delete(`${context.getters.getApi}imagens/animais/${id}`, context.getters.getToken )
 	}
 
 }
