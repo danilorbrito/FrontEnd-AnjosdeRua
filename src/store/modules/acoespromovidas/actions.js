@@ -11,14 +11,20 @@ export default {
 	},
 
 	saveAcoesPromovidas (context, AcoesPromovidas) {
-		axios.post(`${context.getters.getApi}acoespromovidas`, AcoesPromovidas, context.getters.getToken ).then( resp => {
-			context.dispatch('loadAcoesPromovidas')
+		return new Promise( (resolve, reject) => {
+			axios.post(`${context.getters.getApi}acoespromovidas`, AcoesPromovidas, context.getters.getToken ).then( resp => {
+				context.dispatch('loadAcoesPromovidas')
+				resolve(resp)
+			})
 		})
 	},
 
 	updateAcoesPromovidas (context, AcoesPromovidas) {
-		axios.put(`${context.getters.getApi}acoespromovidas`, AcoesPromovidas, context.getters.getToken ).then( resp => {
-			context.dispatch('loadAcoesPromovidas')
+		return new Promise( (resolve, reject) => {
+			axios.put(`${context.getters.getApi}acoespromovidas`, AcoesPromovidas, context.getters.getToken ).then( resp => {
+				context.dispatch('loadAcoesPromovidas')
+				resolve(resp)
+			})
 		})
 	},
 

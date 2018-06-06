@@ -45,7 +45,7 @@
         },
         mounted()
         {
-            EventBus.$on('initInterval', () => this.initInterval() )
+            EventBus.$on('initInterval', () => {this.mensagens=[];this.initInterval()} )
             EventBus.$on('stopInterval', () => this.stopInterval() )
         },
         methods:{
@@ -56,7 +56,6 @@
             },
             stopInterval()
             {
-                this.mensagens=[]
                 clearInterval(this.interval)
             },
             getMessages(){

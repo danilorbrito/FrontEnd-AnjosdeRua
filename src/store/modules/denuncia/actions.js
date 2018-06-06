@@ -14,6 +14,15 @@ export default {
 		axios.delete(`${context.getters.getApi}denuncias/${id}`, context.getters.getToken ).then( resp => {
 			context.dispatch('loadDenuncias')
 		})
+	},
+
+	saveDenuncia (context, denuncia) {
+		return new Promise( (resolve, reject) => {
+			axios.post(`${context.getters.getApi}denuncias`, denuncia, context.getters.getToken ).then( resp => {
+				context.dispatch('loadDenuncias')
+				resolve(resp)
+			})
+		})
 	}
 
 }
