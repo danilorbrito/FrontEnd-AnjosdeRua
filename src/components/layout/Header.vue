@@ -34,7 +34,7 @@
                 let slogan = document.querySelector('.slogan h1')
                 scrollPos  = window.scrollY
 
-                if (scrollPos <= 500) 
+                if (scrollPos <= 500 && slogan) 
                 {
                     slogan.style.transform = `translateY(${-scrollPos/3}px)`
                     slogan.style.opacity   = 1 - (scrollPos/500)

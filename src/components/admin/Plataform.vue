@@ -16,12 +16,12 @@
 
                 tbody#dados
                     tr(v-for="d in tabela", :key="d.id")
-                        td {{ d.nome || d.descricao || d.titulo  || d.associado.nome}}
-                        td {{ d.raca || d.sexo || d.delator || stripHTML(d.texto)  || d.telefone || d.animal.nome  }}
-                        td {{ d.descricao_animal || d.idade || d.email || d.descricaoLocal || d.novasmensagens || d.datahora }}
+                        td {{ d.nome || d.descricao || d.titulo || d.associado.nome}}
+                        td {{ d.raca || d.sexo || d.delator || stripHTML(d.texto) || d.texto || d.telefone || d.animal.nome  }}
+                        td {{ d.descricao_animal || d.idade || d.email || d.descricaoLocal || d.novasmensagens || d.datahora || d.id }}
                         td
                             .btn.read(@click="$emit('actions', 'read', d.id )") Detalhes
-                            .btn.danger(@click="$emit('actions', 'trash', d.id )") Deletar
+                            .btn.danger(@click="$emit('actions', 'trash', d.id )", :title="d.id") Deletar
                             //.btn.warning(@click="$emit('actions', 'update', d.id )") Alterar
                         
         .plataform-footer

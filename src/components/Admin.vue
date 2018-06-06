@@ -53,6 +53,7 @@
 				"password":"chefao01"
 			}
 			this.loginUser(user).then(r=> this.setService("Animais"))
+			EventBus.$on('setService', s => this.setService(s) )
 		},
 		methods:{
 			...mapActions(['deleteAnimal','deleteEspera','deleteAssociado','deleteDenuncia','deleteAdocao','deleteAcoesPromovidas']),
@@ -60,6 +61,8 @@
 			{
 				this.modal=false
 				if(this.service.id == 'Adoções')EventBus.$emit('stopInterval')
+				else if(this.service.id == 'Animais')EventBus.$emit('closeAnimal')
+				this.setService(this.service.id)
 			},
 			operacao(type, id)
 			{
@@ -75,11 +78,13 @@
 						case 'Lista de espera':this.deleteEspera(id);break
 						default:console.warn("trash desconhecido");break
 					}
+					this.setService(this.service.id)
 				}
 				
 				if(type=="read")
 				{
 					if(this.service.id == 'Adoções')EventBus.$emit('initInterval')
+					else if(this.service.id == 'Animais')EventBus.$emit('openAnimal', id)
 					this.service.item = this.dataTable.body.filter( i => i.id == id )[0]
 					this.modal=true
 				}
@@ -97,7 +102,7 @@
 					break
 
 					case 'Adoções':
-						this.dataTable.head = ["Associado", "Animal", "Novas Mensagens"]
+						this.dataTable.head = ["Associado", "Animal", "Data da adoção"]
 						this.loadAdocoes().then( a=> {this.dataTable.body = a;this.loading=false})
 					break
 
@@ -112,7 +117,7 @@
 					break
 
 					case 'Ações promovidas':
-						this.dataTable.head = ["Titulo", "Descrição","Data"]
+						this.dataTable.head = ["Titulo", "Descrição","Id"]
 						this.loadAcoesPromovidas().then( a=> {this.dataTable.body = a;this.loading=false})
 					break
 

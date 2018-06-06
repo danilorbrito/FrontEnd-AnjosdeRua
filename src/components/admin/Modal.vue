@@ -3,7 +3,7 @@
         div(:class="{'modal-frame':true, 'state-appear':status}")
             .modal
                 .modal-inset
-                    .button.close(@click="$emit('close')") x
+                    i.material-icons.button.close(@click="$emit('close')") close
                     .modal-body
                         slot(name="body")    
         div(:class="{'modal-overlay':true, 'state-show':status}")

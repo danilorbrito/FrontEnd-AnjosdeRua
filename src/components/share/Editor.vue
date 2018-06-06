@@ -1,6 +1,6 @@
 <template lang="pug">
     div
-        input(v-model="acao.titulo")
+        input(style="width:90%",v-model="acao.titulo")
         <div id="parentEditor">
             <input type="file" id="upload" @change="upload" v-show="false" />
             <div id="painelEditor">
@@ -41,13 +41,14 @@
 
             <div id="editor" contenteditable="true" v-html="acao.texto"></div>
         </div>
-        .btn.success(v-if="!acao.id", @click="save") Salvar Informações
-        .btn.warning(v-if="acao.id", @click="update") Atualizar Informações
+        .btn.success(v-if="!acao.id && acao.titulo", @click="save") Salvar Informações
+        .btn.warning(v-if="acao.id && acao.titulo", @click="update") Atualizar Informações
 
 </template>
 
 <script>
     import { mapActions } from 'vuex'
+    import { EventBus } from '../../helpers/eventBus.js'
 
 	export default {
         name:'editor',
@@ -59,19 +60,26 @@
         },
         data(){
             return{
-                fontSize:2,
-                texto:''
+                fontSize:2
             }
         },
         methods:{
             ...mapActions(['saveAcoesPromovidas','updateAcoesPromovidas']),
             save(){
-                this.saveAcoesPromovidas( {titulo:this.acao.titulo, texto: document.querySelector("#editor").innerHTML} )
-                this.texto=''
+                this.saveAcoesPromovidas( {titulo:this.acao.titulo, texto:document.querySelector("#editor").innerHTML} ).then(e=> {
+                    this.toast('Cadastrado com sucesso!')
+                    EventBus.$emit('setService','Ações promovidas') 
+                })
             },
             update(){
-                this.updateAcoesPromovidas( {id:this.acao.id,titulo:this.acao.titulo, texto: this.acao.texto } )
-                this.texto=''
+                if( this.acao.titulo && document.querySelector("#editor").innerHTML != '' )
+                {
+                    this.updateAcoesPromovidas( {id:this.acao.id,titulo:this.acao.titulo, texto: document.querySelector("#editor").innerHTML } ).then(e=> {
+                        this.toast('Alterado com sucesso!')
+                        EventBus.$emit('setService','Ações promovidas') 
+                    })
+                }
+                else this.toast("Informe os dados corretamente!")
             },
             applyCommand( comand )
             {
@@ -136,6 +144,13 @@
                     small.innerHTML = "Fonte:"
                     document.getElementById("editor").appendChild(small)
                 }
+            },
+            toast(message)
+            {
+                let toast = document.getElementById("snackbar")
+                toast.innerText=message
+                toast.classList.add("show")
+                setTimeout( () => toast.classList.remove("show"), 3000)
             }
         }
 	}

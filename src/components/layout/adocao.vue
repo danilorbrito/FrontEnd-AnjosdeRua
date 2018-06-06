@@ -2,26 +2,25 @@
     #adocao
         h1  Adoção
         section
-            p Amar o proximo é o bem maior que se  pode fazer a alguem!<br> pratique um ato de amor, adote uma vida! 
+            p Amar o proximo é o bem maior que se  pode fazer a alguém!<br> pratique um ato de amor, adote uma vida! 
         
-            h1.titleRedes Como faço para adotar ?
+            h2.titleRedes Como faço para adotar ?
             p É simples, preencha o formulário.
            
-            form.boxF(action="forumalario" method="post")
-                
+            form.boxF
                 label Nome:
-                    input(type="text", v-model="espera.nome")
+                    input(type="text", name="nome" , v-model="espera.nome", required)
 
                 label E-mail:
-                     input(type="text", v-model="espera.email")
+                    input(type="email", v-model="espera.email", required)
 
                 label Telefone:
-                     input(type="text", v-model="espera.telefone")
+                    input(type="text", v-model="espera.telefone", required)
 
                 label Porte do pet desejado:
-                     input(type="text", v-model="espera.descricao_animal")
+                    input(type="text", v-model="espera.descricao_animal", required)
                     
-                button.enviar(type="button", @click="saveEspera(espera)") Enviar dados
+                .enviar(@click="sendForm") Enviar dados
 </template>
 
 <script>
@@ -33,15 +32,33 @@
         {
             return{
                 espera:	{
-                    nome: "Pessoa",
-                    email: "mail@mail.com",
-                    telefone: "(00)00000000",
-                    descricao_animal: "Descrever as caracteristicas de seu animal pretendido"
+                    nome: "",
+                    email: "",
+                    telefone: "",
+                    descricao_animal: ""
                 }
             }
         },
         methods:{
-            ...mapActions(['saveEspera'])
+            ...mapActions(['saveEspera']),
+            sendForm()
+            {
+                if( this.willvalidate( document.querySelector(".boxF") ) )
+                {
+                    this.saveEspera(this.espera).then(e=> {
+                        this.toast('Cadastrado com sucesso!')
+                        document.querySelector(".boxF").reset()
+                    })
+                }
+                else this.toast("Informe os dados corretamente")
+            },
+            toast(message)
+            {
+                let toast = document.getElementById("snackbar")
+                toast.innerText=message
+                toast.classList.add("show")
+                setTimeout( () => toast.classList.remove("show"), 3000)
+            }
         }
 	}
 </script>
@@ -100,7 +117,7 @@
             &:focus
                 box-shadow 0 0 3px 1px #aaa
                 border-bottom 1px solid transparent
-        button 
+        div 
             padding .5rem
             border solid 1px transparent
             margin 1rem auto 0

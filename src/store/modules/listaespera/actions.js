@@ -10,10 +10,9 @@ export default {
 		})
 	},
 
-	saveEspera (context, animal) {
-		animal.adotado=0
+	saveEspera (context, espera) {
 		return new Promise( (resolve, reject) => {
-			axios.post(`${context.getters.getApi}listadeespera`, animal ).then( resp => {
+			axios.post(`${context.getters.getApi}listadeespera`, espera ).then( resp => {
 				context.dispatch('loadEsperas')
 				resolve(resp.data.data.id)
 			})

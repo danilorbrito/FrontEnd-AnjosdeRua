@@ -2,6 +2,9 @@ import Vue from 'vue'
 import App from './App'
 import Vuex from 'vuex'
 import router from './router'
+import willvalidate from 'willvalidate'
+
+Vue.use(willvalidate)
 
 Vue.config.productionTip = false
 Vue.use(Vuex)

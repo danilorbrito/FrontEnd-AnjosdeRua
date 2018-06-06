@@ -2,31 +2,58 @@
     #denuncia
         h1  Denúncia
         section
-            p Para denúnciar é simples e seguro, você pode nós informar de modo anônimo, apenas  relatando informações dos acontecimentos.
-            h1.titleRedes Como faço para Denúnciar ?:
-            p é simples basta peencher esse forumalario.
+            p Para denúnciar é simples e seguro!
+            p Você pode nos informar de modo anônimo, apenas  relatando informações dos acontecimentos.
            
-            form.boxF(action="forumalario" method="post")
-                
+            form.boxForm
                 label Nome (Anônimo):
-                    input(type="text")
-
-                label E-mail / Telefone :
-                     input(type="text")
+                    input(type="text", v-model="denuncia.delator", required)
 
                 label Local:
-                     input(type="text")
+                    input(type="text", v-model="denuncia.descricao_local", required)
 
                 label Denúncia:   
-                     input(type="text")
+                    input(type="text", v-model="denuncia.descricao", required)
 
-                button.enviar(type="button") Enviar dados
-                button.limpar(type="button") Limpar dados
+                button.enviar(type="button", @click="save") Enviar dados
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
+
 	export default {
-		name: 'denuncia'
+        name: 'denuncia',
+        data()
+        {
+            return{
+                denuncia:{
+                    nome:'',
+                    local:'',
+                    denuncia:''
+                }
+            }
+        },
+        methods:{
+            ...mapActions(['saveDenuncia']),
+            save()
+            {
+                if( this.willvalidate( document.querySelector(".boxForm") ) )
+                {
+                    this.saveDenuncia(this.denuncia).then(e=> {
+                        this.toast('Cadastrado com sucesso!')
+                        document.querySelector(".boxForm").reset()
+                    })
+                }
+                else this.toast("Informe os dados corretamente")
+            },
+            toast(message)
+            {
+                let toast = document.getElementById("snackbar")
+                toast.innerText=message
+                toast.classList.add("show")
+                setTimeout( () => toast.classList.remove("show"), 3000)
+            }
+        }
 	}
 </script>
 
@@ -67,7 +94,7 @@
         color silver
         margin-bottom 10px
 
-    .boxF
+    .boxForm
         margin 2rem auto
         width 75%
         label
