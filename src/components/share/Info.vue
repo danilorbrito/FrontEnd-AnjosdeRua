@@ -39,8 +39,9 @@
         align-items center
         color #fff
         text-align center
-        & p
-            color #efdfbd
+
+        & h1
+            font-weight bold
             letter-spacing 3px
 
     .icon

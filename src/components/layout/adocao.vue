@@ -1,63 +1,53 @@
 <template lang="pug">
     #adocao
         h1  Adoção
-        section
-            p Amar o proximo é o bem maior que se  pode fazer a alguém!<br> pratique um ato de amor, adote uma vida! 
-        
-            h2.titleRedes Como faço para adotar ?
-            p É simples, preencha o formulário.
-           
-            form.boxF
-                label Nome:
-                    input(type="text", name="nome" , v-model="espera.nome", required)
+        p Adote um amigo!
+        p É Rápido, fácil sem complicação
 
-                label E-mail:
-                    input(type="email", v-model="espera.email", required)
+        section#busca
+            label Raça
+                input(type="text", v-model="filtro.raca", placeholder="Não Obrigatório")
 
-                label Telefone:
-                    input(type="text", v-model="espera.telefone", required)
+            label Cor
+                input(type="text", v-model="filtro.cor", placeholder="Não Obrigatório")
 
-                label Porte do pet desejado:
-                    input(type="text", v-model="espera.descricao_animal", required)
-                    
-                .enviar(@click="sendForm") Enviar dados
+            label Idade Máxima {{filtro.idademax}}
+                <input type="range" :min="filtro.idademin" max="20" class="slider" v-model="filtro.idademax">
+
+            label Idade mínima {{filtro.idademin}}
+                <input type="range" min="1" :max="filtro.idademax" class="slider" v-model="filtro.idademin" >
+
+            label Sexo
+            select(v-model="filtro.sexo")   
+                option(value="") Ambos
+                option(value="m") Macho
+                option(value="f") Fêmea
+
+            button.enviar(type="button", @click="callModal") Procurar   
+
 </template>
 
 <script>
     import {mapActions} from 'vuex'
-    
+    import { EventBus } from '../../helpers/eventBus.js'
+
 	export default {
         name: 'doacao',
         data()
         {
             return{
-                espera:	{
-                    nome: "",
-                    email: "",
-                    telefone: "",
-                    descricao_animal: ""
+                filtro:{
+                    raca:'',
+                    cor:'',
+                    sexo:'',
+                    idademin:1,
+                    idademax:20
                 }
             }
         },
         methods:{
-            ...mapActions(['saveEspera']),
-            sendForm()
-            {
-                if( this.willvalidate( document.querySelector(".boxF") ) )
-                {
-                    this.saveEspera(this.espera).then(e=> {
-                        this.toast('Cadastrado com sucesso!')
-                        document.querySelector(".boxF").reset()
-                    })
-                }
-                else this.toast("Informe os dados corretamente")
-            },
-            toast(message)
-            {
-                let toast = document.getElementById("snackbar")
-                toast.innerText=message
-                toast.classList.add("show")
-                setTimeout( () => toast.classList.remove("show"), 3000)
+            callModal(){
+                EventBus.$emit('openModalFiltro', this.filtro)
             }
         }
 	}
@@ -75,73 +65,77 @@
             color #C6480A
             text-transform uppercase
             letter-spacing 3px
-            border-bottom 1px solid #eee
+        & p
+            font-size 2.0em
+            text-align center
+            letter-spacing 2px
 
-        & section
-            width 90%
-            padding-top 20px
-            margin auto
-            color gray
-            & p
-                font-size 2.0em
-                text-align center
-                letter-spacing 2px
+    #busca
+        width 60%
+        padding-top 20px
+        margin auto
+        color gray
 
-
-    .titleRedes
-        letter-spacing 2px
-        font-size 1.6em
-        text-align center
-        color #C6480A
-        text-transform uppercase
-        letter-spacing 3px
-        border-bottom 1px solid #eee
-        margin-top 50px
-        color silver
-        margin-bottom 10px
-
-    .boxF
-        margin 2rem auto
-        width 75%
         label
             font-size 1.3rem
             font-weight bold
             margin .3rem 0
-        input
+
+        input[type="text"]
             width 100%
             padding .3rem
             margin .5rem 0
             background-color #fff
             border solid 1px transparent
             border-bottom 1px solid #bcbcbc
-            &:focus
-                box-shadow 0 0 3px 1px #aaa
-                border-bottom 1px solid transparent
-        div 
+
+        select  
+            border 1px solid #cccccc
+            border-radius 3px
+            padding 6px
+            margin-left 20px
+
+        button 
             padding .5rem
             border solid 1px transparent
             margin 1rem auto 0
             width 100%
             border-radius 5px
-            color #fff
+            color #3d3d3d
+            font-weight bold
             font-size 1.2rem
             text-align center
-            &.enviar
-                background #33df3e
-                &:hover
-                    background #33d03c
-                &:active
-                    background #33df3f
-            &.limpar
-                background #ed3b3b
-                &:hover
-                    background #cd3b3b
-                &:active
-                    background #fd3b3b
+            box-shadow 3px 3px 3px #ccc
+            cursor pointer
 
 
-    @media screen and (min-width: 768px)
-        #quemsomos section
-            width 70%
+    .slider 
+        -webkit-appearance none
+        width 100%
+        height 5px
+        background-color gray
+        outline none
+        opacity 0.7
+        -webkit-transition .2s
+        transition opacity .2s
+
+    .slider:hover 
+        opacity 1
+
+    .slider::-webkit-slider-thumb 
+        -webkit-appearance none
+        appearance none
+        width 18px
+        height 18px
+        background #3d3d3d
+        cursor pointer
+        border-radius:30px
+
+    .slider::-moz-range-thumb 
+        width 18px
+        height 18px
+        background #3d3d3d
+        cursor pointer
+        border-radius 30px
 
 </style>

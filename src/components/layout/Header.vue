@@ -61,6 +61,7 @@
         left 0
         height 55px
         z-index 200
+        background-color #312414
 
         & .main
             height 100%
@@ -102,6 +103,7 @@
     @media screen and (min-width: 768px)
         #top 
             position static
+            background-color transparent
 
         #logo
             width 22%
@@ -109,9 +111,6 @@
             background-size 150px
 
     @media screen and (min-width: 992px)
-        #top
-            background-color transparent
-
         .slogan
             & h1
                 font-size 5.5rem

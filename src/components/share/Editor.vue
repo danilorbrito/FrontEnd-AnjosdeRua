@@ -1,6 +1,6 @@
 <template lang="pug">
     div
-        input(style="width:90%",v-model="acao.titulo")
+        input(type="text",style="width:90%",v-model="acao.titulo", maxlength="40")
         <div id="parentEditor">
             <input type="file" id="upload" @change="upload" v-show="false" />
             <div id="painelEditor">

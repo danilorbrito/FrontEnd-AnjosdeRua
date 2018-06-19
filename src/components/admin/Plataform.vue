@@ -4,7 +4,7 @@
             h1  
                 span#servico {{service}}
 
-            input.search(@keyup="search", v-model="busca", placeholder="Pesquisar")
+            input.search(type="text",@keyup="search", v-model="busca", placeholder="Pesquisar")
 
             .btn.success(@click="$emit('open')", v-if="!exibeBtn.delator && !exibeBtn.descricao_animal" ) Cadastrar
         
@@ -16,8 +16,8 @@
 
                 tbody#dados
                     tr(v-for="d in tabela", :key="d.id")
-                        td {{ d.nome || d.descricao || d.titulo || d.associado.nome}}
-                        td {{ d.raca || d.sexo || d.delator || stripHTML(d.texto) || d.texto || d.telefone || d.animal.nome  }}
+                        td {{ d.nome || d.descricao || d.titulo || getNomeObj(d.associado)}}
+                        td {{ d.raca || d.sexo || d.delator || stripHTML(d.texto) || d.texto || d.telefone || getNomeObj(d.animal)  }}
                         td {{ d.descricao_animal || d.idade || d.email || d.descricaoLocal || d.novasmensagens || d.datahora || d.id }}
                         td
                             .btn.read(@click="$emit('actions', 'read', d.id )") Detalhes
@@ -46,6 +46,10 @@
             },
             test( b ){
                 return b.toString().toLowerCase().indexOf( this.busca.toLowerCase() ) != -1 
+            },
+            getNomeObj(obj)
+            {
+                return obj && obj.nome ? obj.nome : ''
             },
             search()
             {
