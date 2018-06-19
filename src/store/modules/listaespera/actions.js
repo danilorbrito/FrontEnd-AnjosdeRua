@@ -10,6 +10,10 @@ export default {
 		})
 	},
 
+	loadFiltro (context, filtro) {
+		axios.get(`${context.getters.getApi}filtro/${filtro.cor}/${filtro.idademin}/${filtro.idademax}}/${filtro.sexo}`, context.getters.getToken )
+	},
+
 	saveEspera (context, espera) {
 		return new Promise( (resolve, reject) => {
 			axios.post(`${context.getters.getApi}listadeespera`, espera ).then( resp => {

@@ -10,6 +10,12 @@ export default {
 		})
 	},
 
+	findByAnimal(context, nome){
+		return new Promise( (resolve, reject) => {
+			axios.get(`${context.getters.getApi}animais/${nome}`, context.getters.getToken ).then( r => resolve(r) )
+		})	
+	},
+
 	saveAnimal (context, animal) {
 		animal.adotado=0
 		return new Promise( (resolve, reject) => {
@@ -30,8 +36,11 @@ export default {
 	},
 
 	deleteAnimal (context, id) {
-		axios.delete(`${context.getters.getApi}animais/${id}`, context.getters.getToken ).then( resp => {
-			context.dispatch('loadAnimais')
+		return new Promise( (resolve, reject) => {
+			axios.delete(`${context.getters.getApi}animais/${id}`, context.getters.getToken ).then( resp => {
+				context.dispatch('loadAnimais')
+				resolve(resp)
+			})
 		})
 	},
 

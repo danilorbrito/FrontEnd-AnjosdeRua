@@ -10,6 +10,12 @@ export default {
 		})
 	},
 
+	findByAssociado(context, nome){
+		return new Promise( (resolve, reject) => {
+			axios.get(`${context.getters.getApi}associados/${nome}`, context.getters.getToken ).then( r => resolve(r) )
+		})	
+	},
+
 	saveAssociado(context, associado) {
 		return new Promise( (resolve, reject) => {
 			axios.post(`${context.getters.getApi}associados`, associado, context.getters.getToken ).then( resp => {
@@ -29,8 +35,11 @@ export default {
 	},
 
 	deleteAssociado(context, id) {
-		axios.delete(`${context.getters.getApi}associados/${id}`, context.getters.getToken ).then( resp => {
-			context.dispatch('loadAssociados')
+		return new Promise( (resolve, reject) => {
+			axios.delete(`${context.getters.getApi}associados/${id}`, context.getters.getToken ).then( resp => {
+				context.dispatch('loadAssociados')
+				resolve(resp)
+			})
 		})
 	}
 

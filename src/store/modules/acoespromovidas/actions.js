@@ -29,8 +29,11 @@ export default {
 	},
 
 	deleteAcoesPromovidas (context, id) {
-		axios.delete(`${context.getters.getApi}acoespromovidas/${id}`, context.getters.getToken ).then( resp => {
-			context.dispatch('loadAcoesPromovidas')
+		return new Promise( (resolve, reject) => {
+			axios.delete(`${context.getters.getApi}acoespromovidas/${id}`, context.getters.getToken ).then( resp => {
+				context.dispatch('loadAcoesPromovidas')
+				resolve(resp)
+			})
 		})
 	}
 }
