@@ -15,7 +15,7 @@
                 label Denúncia  
                     input(type="text", v-model="denuncia.descricao", required)
 
-                button.enviar(type="button", @click="save") Enviar dados
+                button.enviar(type="button", @click.prevent="save") Enviar dados
 </template>
 
 <script>

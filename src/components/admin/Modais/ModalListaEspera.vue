@@ -6,7 +6,9 @@
             input(type="email",placeholder="E-mail", v-model="item.email" readonly)
 
         input(type="text",placeholder="Telefone", v-model="item.telefone" readonly)
-        p {{item.descricao_animal}}
+        p
+            strong Animal: 
+            span(style="cursor:pointer",@click="$emit('showAnimal2', getAnimal )") {{getAnimal.nome}}
 
 </template>
 
@@ -16,6 +18,12 @@
         props:{
             item:{
                 type:Object
+            }
+        },
+        computed:{
+            getAnimal()
+            {
+                return this.item.animal || {}
             }
         }
 	}

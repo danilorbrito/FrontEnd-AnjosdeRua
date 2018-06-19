@@ -7,7 +7,7 @@
     .groupInfo
       Info(title="Adotar é salvar uma vida", text="Colabore conosco e ajude-nos a dar uma família a nossos amiguinhos", icon="favorite")
       Info(title="Um ato pode mudar o mundo", text="Colabore conosco e ajude-nos a dar uma família a nossos amiguinhos", icon="pets")
-      Info(title="Denúncie maus-tratos", text="Faça denúncia através de nosso site ou aplicativo e torna o mundo um lugar melhor", icon="chat_bubble_outline")
+      Info(title="Denúncie maus-tratos", text="Faça denúncia através de nosso site ou aplicativo e torne o mundo um lugar melhor", icon="chat_bubble_outline")
 
     QuemSomos
     denuncia

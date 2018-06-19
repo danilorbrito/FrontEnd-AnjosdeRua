@@ -6,7 +6,7 @@
 
             input.search(type="text",@keyup="search", v-model="busca", placeholder="Pesquisar")
 
-            .btn.success(@click="$emit('open')", v-if="!exibeBtn.delator && !exibeBtn.descricao_animal" ) Cadastrar
+            .btn.success(@click="$emit('open')", v-if="!exibeBtn.delator && !exibeBtn.telefone" ) Cadastrar
         
         .plataform-content
             table(border="1")

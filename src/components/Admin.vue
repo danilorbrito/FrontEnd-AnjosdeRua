@@ -11,7 +11,7 @@
 				ModalDenuncia(v-if="service.id=='Denúncias'", :item="service.item")
 				ModalAdocoes(v-if="service.id=='Adoções'", :item="service.item", @showAssociado="verAssociado", @showAnimal="verAnimal")
 				ModalAcoesPromovidas(v-if="service.id=='Ações promovidas'", :item="service.item")
-				ModalListaEspera(v-if="service.id=='Lista de espera'", :item="service.item")
+				ModalListaEspera(v-if="service.id=='Lista de espera'", :item="service.item", @showAnimal2="verAnimal")
 
 		NavBar(@service="setService")
 		Plataform(:service="service.id", @open="service.item={},service.type='insert',modal=true", :head="dataTable.head", :dados="dataTable.body", @actions="operacao")
@@ -134,7 +134,7 @@
 					break
 
 					case 'Lista de espera':
-						this.dataTable.head = ["Nome", "Telefone","Descricao"]
+						this.dataTable.head = ["Associado", "Telefone","E-mail"]
 						this.loadEsperas().then( a=> {this.dataTable.body = a;this.loading=false})
 					break
 
