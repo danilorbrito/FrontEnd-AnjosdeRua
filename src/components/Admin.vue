@@ -48,11 +48,7 @@
 		},
 		mounted()
 		{
-			let user = {
-				"login":"chefao01",
-				"password":"chefao01"
-			}
-			this.loginUser(user).then(r=> this.setService("Animais"))
+			this.setService("Animais")
 			EventBus.$on('setService', s => this.setService(s) )
 		},
 		methods:{
@@ -70,15 +66,31 @@
 				{
 					switch(this.service.id)
 					{
-						case 'Animais':this.deleteAnimal(id);break
-						case 'Adoções':this.deleteAdocao(id);break
-						case 'Denúncias':this.deleteDenuncia(id);break
-						case 'Associados':this.deleteAssociado(id);break
-						case 'Ações promovidas':this.deleteAcoesPromovidas(id);break
-						case 'Lista de espera':this.deleteEspera(id);break
+						case 'Animais':
+							this.deleteAnimal(id).then(e=>this.setService(this.service.id))
+						break
+
+						case 'Adoções':
+							this.deleteAdocao(id).then(e=>this.setService(this.service.id))
+						break
+
+						case 'Denúncias':
+							this.deleteDenuncia(id).then(e=>this.setService(this.service.id))
+						break
+
+						case 'Associados':
+							this.deleteAssociado(id).then(e=>this.setService(this.service.id))
+						break
+
+						case 'Ações promovidas':
+							this.deleteAcoesPromovidas(id).then(e=>this.setService(this.service.id))
+						break
+
+						case 'Lista de espera':
+							this.deleteEspera(id).then(e=>this.setService(this.service.id))
+						break
 						default:console.warn("trash desconhecido");break
 					}
-					this.setService(this.service.id)
 				}
 				
 				if(type=="read")
@@ -107,7 +119,7 @@
 					break
 
 					case 'Denúncias':
-						this.dataTable.head = ["Descrição", "Delator", "Local"]
+						this.dataTable.head = ["Descrição", "Delator", "Id"]
 						this.loadDenuncias().then( d=> {this.dataTable.body = d;this.loading=false})
 					break
 
@@ -134,12 +146,14 @@
 			},
 			verAssociado( associado )
 			{
+				EventBus.$emit('stopInterval')
 				this.service.id='Associados'
 				this.service.item=associado
 				this.setService("Associados")
 			},
 			verAnimal( animal )
 			{
+				EventBus.$emit('stopInterval')
 				this.service.id='Animais'
 				this.service.item=animal
 				this.setService("Animais")

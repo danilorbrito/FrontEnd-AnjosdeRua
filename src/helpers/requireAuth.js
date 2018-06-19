@@ -1,15 +1,15 @@
+import store from '../store/index.js'
+import axios from 'axios'
+
 function requireAuth (to, from, next)
 {
-  let loggedIn = true
-
-  if (loggedIn)
-  {
+  let jwt = store.modules.system.state.token
+  if( jwt.headers ) 
     next()
-  } 
   else
   {
-    alert('não está autenticado')
-    next('/')
+    alert('Usuário não autenticado!')
+    next('/login')
   }
 }
 
