@@ -3,28 +3,22 @@
         div(:class="{'modal-frame':true, 'state-appear':status}")
             .modal
                 .modal-inset
-                    i.material-icons.button.close(@click="status=false") close
+                    i.material-icons.button.close(@click="status=false,animaisnaoadotados=[],loading=true") close
 
                     h1(v-if="!form") Resultado da busca
                     h1(v-if="form") Formulário de Adoção
                     .modal-body(style="overflow:auto;max-height:300px;padding-top:20px;")
                         div(v-if="!form")
-                            div(style="width:200px;height:100px;outline:1px solid red;display:inline-block;", @click="form=true") 
-                            div(style="width:200px;height:100px;outline:1px solid red;display:inline-block;", @click="form=true")
-                            div(style="width:200px;height:100px;outline:1px solid red;display:inline-block;", @click="form=true")
-                            div(style="width:200px;height:100px;outline:1px solid red;display:inline-block;", @click="form=true")
-                            div(style="width:200px;height:100px;outline:1px solid red;display:inline-block;", @click="form=true")
-                            div(style="width:200px;height:100px;outline:1px solid red;display:inline-block;", @click="form=true")
-                            div(style="width:200px;height:100px;outline:1px solid red;display:inline-block;", @click="form=true")
-                            div(style="width:200px;height:100px;outline:1px solid red;display:inline-block;", @click="form=true")
-                            div(style="width:200px;height:100px;outline:1px solid red;display:inline-block;", @click="form=true")
-                            div(style="width:200px;height:100px;outline:1px solid red;display:inline-block;", @click="form=true")
-                            div(style="width:200px;height:100px;outline:1px solid red;display:inline-block;", @click="form=true")
-                            div(style="width:200px;height:100px;outline:1px solid red;display:inline-block;", @click="form=true")
+                            div.animal(v-for="a in animaisnaoadotados") 
+                                img.viewimg(:src="'http://soriano.esy.es/app/client/assets/imagens/animais/'+a.imagem")
+                                span(style="cursor:pointer;color:#3d3d3d;",@click="form=true,espera.animal=a") {{a.nome}}
+
+                        Loading(v-show="loading")
+                        p(v-if="loading==false && animaisnaoadotados.length == 0") A busca não retornou resultado
 
                         div(v-if="form")
                             form#formEspera
-                                p Animal: ...
+                                p Animal: {{espera.animal.nome}}
                                 label Nome
                                     input(type="text", name="nome" , v-model="espera.nome", required)
 
@@ -34,7 +28,7 @@
                                 label Telefone
                                     input(type="text", v-model="espera.telefone", required)
                                     
-                                button.enviar(@click="sendForm") Enviar dados
+                                button.enviar(@click.prevent="sendForm") Enviar dados
 
         div(:class="{'modal-overlay':true, 'state-show':status}")
             
@@ -43,8 +37,12 @@
 <script>
     import {mapActions} from 'vuex'
     import { EventBus } from '../../helpers/eventBus.js'
+    import Loading from './Loading'
 
 	export default {
+        components:{
+            Loading
+        },
         data()
         {
             return{
@@ -55,7 +53,9 @@
                     email: '',
                     telefone: '',
                     animal: {}
-                }
+                },
+                animaisnaoadotados:[],
+                loading:true
             }
         },
         name: 'ModalFiltro',
@@ -63,7 +63,10 @@
             EventBus.$on('openModalFiltro', filtro => {
                 this.form=false
                 this.status=true
-                //manda o filtro para o backend e listar o resultado
+                this.loadFiltro(filtro).then(r=>{
+                    this.animaisnaoadotados=r.data.data
+                    this.loading=false
+                })
             })
         },
         methods:{
@@ -121,5 +124,18 @@
         text-align center
         box-shadow 3px 3px 3px #ccc
         cursor pointer
+
+.animal
+    width 200px
+    height 100px
+    display inline-block
+    
+
+.viewimg
+    width 100px
+    height 100px
+    border-radius 50%
+    display block
+    margin auto
 
 </style>
