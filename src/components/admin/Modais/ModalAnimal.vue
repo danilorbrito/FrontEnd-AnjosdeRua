@@ -4,13 +4,13 @@
         input(v-show="false", v-model="item.id")
 
         div.d-flex
-            input.m-right(placeholder="Nome", v-model="item.nome", required)
-            input(placeholder="Raça", v-model="item.raca", required)
+            input.m-right(type="text",placeholder="Nome", v-model="item.nome", required)
+            input(type="text",placeholder="Raça", v-model="item.raca", required)
 
-        input(placeholder="Descrição", v-model="item.descricao", required)
+        input(type="text",placeholder="Descrição", v-model="item.descricao", required)
 
         div.d-flex
-            input.m-right(placeholder="Cor", v-model="item.cor", required)
+            input.m-right(type="text",placeholder="Cor", v-model="item.cor", required)
             input(type="number", min="0", placeholder="Idade", v-model="item.idade")
 
         p.d-flex
@@ -21,7 +21,7 @@
             input(type="radio", name="sexo", value="f", :checked=" item.sexo == 'f' ", v-model="item.sexo"  )
 
         .uploads(v-if="item.id && imagens.length > 0")
-            div(v-for="(i,index) in imagens")
+            div(v-for="(i,index) in getImagens")
                 img(:src="'http://soriano.esy.es/app/client/assets/imagens/animais/'+i.nome_imagem", width="110", height="86")
                 i.material-icons.trash(@click="removeImage(i.id),imagens.splice(index, 1)") close
 
@@ -29,8 +29,12 @@
             input(name="id_animal", v-show="false", v-model="item.id")
             input#file(type="file" name="arquivo", v-show="false", @change="uploading")
 
-        label(for="file", v-if="item.id")
+        label(for="file", v-if="item.id && item.adotado!=1")
             i.material-icons.linkAddImage add_to_photos 
+
+        label(v-if="item.id && item.adotado==1", @click="showImages(item.id)")
+            i.material-icons.linkAddImage cached 
+
         br
         .btn.success(v-if="!item.id", @click="save") Salvar Informações
         .btn.warning(v-if="item.id", @click="update") Atualizar Informações
@@ -55,13 +59,13 @@
         },
         mounted(){
             EventBus.$on('openAnimal', id => this.showImages(id))
-            EventBus.$on('closeAnimal', () => this.imagens = [] )
+            EventBus.$on('closeAnimal', () => this.imagens = [])
         },
 		methods:{
             ...mapActions(['loadImages','saveImage','removeImage','saveAnimal','updateAnimal']),
             showImages(id)
             {
-                this.loadImages(id).then(r => this.imagens = r.data.data )
+                this.loadImages(id).then(r => this.imagens = r.data.data)
             },
             uploading(e)
             {
@@ -80,7 +84,7 @@
                     this.saveAnimal(this.item).then(e=> {
                         this.toast('Cadastrado com sucesso!')
                         document.querySelector("#formanimal").reset()
-                        EventBus.$emit('setService','Animal')
+                        EventBus.$emit('setService','Animais')
                     })
                 }
                 else this.toast("Informe os campos do formulário")
@@ -92,7 +96,7 @@
                     this.updateAnimal(this.item).then(e=> {
                         this.toast('Alterado com sucesso!')
                         document.querySelector("#formanimal").reset()
-                        EventBus.$emit('setService','Animal')
+                        EventBus.$emit('setService','Animais')
                     })
                 }
                 else this.toast("Informe os campos do formulário")
@@ -104,7 +108,12 @@
                 toast.classList.add("show")
                 setTimeout( () => toast.classList.remove("show"), 3000)
             }
-		}
+        },
+        computed:{
+            getImagens(){
+                return this.imagens
+            }
+        }
 	}
 </script>
 

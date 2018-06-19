@@ -1,6 +1,7 @@
 <template lang="pug">
   div
     ModalAcoes
+    ModalFiltro
     Header
 
     .groupInfo
@@ -9,9 +10,9 @@
       Info(title="Denúncie maus-tratos", text="Faça denúncia através de nosso site ou aplicativo e torna o mundo um lugar melhor", icon="chat_bubble_outline")
 
     QuemSomos
+    denuncia
     AcoesPromovidas
     adocao
-    denuncia
     
 </template>
 
@@ -21,13 +22,14 @@
   import AcoesPromovidas from './layout/AcoesPromovidas'
   import Info from './share/Info'
   import ModalAcoes from './share/ModalAcoes'
+  import ModalFiltro from './share/ModalFiltro'
   import adocao from './layout/adocao'
   import denuncia from './layout/denuncia'
 
   export default {
     name: 'Home',
     components:{
-      Header, QuemSomos, AcoesPromovidas, Info, ModalAcoes, adocao, denuncia
+      Header, QuemSomos, AcoesPromovidas, Info, ModalAcoes, ModalFiltro, adocao, denuncia
     }
   }
 </script>

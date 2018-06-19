@@ -4,10 +4,10 @@
         input(placeholder="Id", v-show="false", v-model="item.id")
 
         div.d-flex
-            input.m-right(placeholder="Nome", v-model="item.nome", required)
+            input.m-right(type="text", placeholder="Nome", v-model="item.nome", required)
             input(type="email",placeholder="E-mail", v-model="item.email", required)
 
-        input(placeholder="Pass", v-model="item.pass", :required="!item.id" )
+        input(type="text", placeholder="Pass", v-model="item.pass", :required="!item.id" )
 
         p.d-flex
             span Masculino
@@ -17,17 +17,17 @@
             input(type="radio", name="sexo", value="f", :checked=" item.sexo == 'f' ", v-model="item.sexo", required)
 
         div.d-flex
-            input.m-right(placeholder="Rua", v-model="getEndereco.logradouro", required)
-            input.m-right(placeholder="Número", v-model="getEndereco.numero", required)
-            input(placeholder="Bairro", v-model="getEndereco.bairro", required)
+            input.m-right(type="text",placeholder="Rua", v-model="getEndereco.logradouro", required)
+            input.m-right(type="text",placeholder="Número", v-model="getEndereco.numero", required)
+            input(type="text",placeholder="Bairro", v-model="getEndereco.bairro", required)
 
         div.d-flex
-            input.m-right(placeholder="Cidade", v-model="getEndereco.cidade", required)
-            input.m-right(placeholder="Estado", v-model="getEndereco.estado", required)
-            input(placeholder="Cep", v-model="getEndereco.cep")
+            input.m-right(type="text",placeholder="Cidade", v-model="getEndereco.cidade", required)
+            input.m-right(type="text",placeholder="Estado", v-model="getEndereco.estado", required)
+            input(type="text",placeholder="Cep", v-model="getEndereco.cep")
 
         p Telefones
-        input(placeholder="Informe o telefone e pressione enter", @keyup.enter="addFone" )
+        input(type="text",placeholder="Informe o telefone e pressione enter", @keyup.enter="addFone" )
 
         <div class="chip" v-for="(f, index) in getTelefones" >
             i.material-icons.fones phone_in_talk
