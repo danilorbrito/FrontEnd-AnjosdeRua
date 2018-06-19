@@ -2,9 +2,9 @@
     #formDenuncia
         h3 Denúncia
         p {{item.descricao}}
-        input(placeholder="Delator", v-model="item.delator")
-        input(placeholder="Descrição do local", v-model="item.descricao_local")
-        input(placeholder="Data da denúncia", v-model="item.dt_denuncia")
+        input(type="text",placeholder="Delator", v-model="item.delator" readonly)
+        input(type="text",placeholder="Descrição do local", v-model="item.descricao_local" readonly)
+        input(type="text",placeholder="Data da denúncia", v-model="item.dt_denuncia" readonly)
 
 </template>
 

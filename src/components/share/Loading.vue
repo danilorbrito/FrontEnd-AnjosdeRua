@@ -18,7 +18,7 @@
 
 <style>
 .sk-fading-circle {
-  margin:auto;
+  margin:20px auto;
   width: 40px;
   height: 40px;
   position: relative;

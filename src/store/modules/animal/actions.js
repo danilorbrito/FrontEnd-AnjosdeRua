@@ -10,6 +10,12 @@ export default {
 		})
 	},
 
+	findByAnimal(context, nome){
+		return new Promise( (resolve, reject) => {
+			axios.get(`${context.getters.getApi}animais/${nome}`, context.getters.getToken ).then( r => resolve(r) )
+		})	
+	},
+
 	saveAnimal (context, animal) {
 		animal.adotado=0
 		return new Promise( (resolve, reject) => {
@@ -21,15 +27,20 @@ export default {
 	},
 
 	updateAnimal (context, animal) {
-		axios.put(`${context.getters.getApi}animais`, animal, context.getters.getToken ).then( resp => {
-			console.log( resp )
-			context.dispatch('loadAnimais')
+		return new Promise( (resolve, reject) => {
+			axios.put(`${context.getters.getApi}animais`, animal, context.getters.getToken ).then( resp => {
+				context.dispatch('loadAnimais')
+				resolve(resp)
+			})
 		})
 	},
 
 	deleteAnimal (context, id) {
-		axios.delete(`${context.getters.getApi}animais/${id}`, context.getters.getToken ).then( resp => {
-			context.dispatch('loadAnimais')
+		return new Promise( (resolve, reject) => {
+			axios.delete(`${context.getters.getApi}animais/${id}`, context.getters.getToken ).then( resp => {
+				context.dispatch('loadAnimais')
+				resolve(resp)
+			})
 		})
 	},
 
@@ -44,7 +55,7 @@ export default {
 	},
 
 	removeImage (context, id) {
-		return axios.delete(`${context.getters.getApi}imagens/${id}`, context.getters.getToken )
+		axios.delete(`${context.getters.getApi}imagens/animais/${id}`, context.getters.getToken )
 	}
 
 }

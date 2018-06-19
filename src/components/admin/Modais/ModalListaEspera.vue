@@ -2,11 +2,13 @@
     #ModalListaEspera
         h3 Lista de espera para adoção
         div.d-flex
-            input.m-right(placeholder="Nome", v-model="item.nome")
-            input(placeholder="E-mail", v-model="item.email")
+            input.m-right(type="text",placeholder="Nome", v-model="item.nome" readonly)
+            input(type="email",placeholder="E-mail", v-model="item.email" readonly)
 
-        input(placeholder="Telefone", v-model="item.telefone")
-        p {{item.descricao_animal}}
+        input(type="text",placeholder="Telefone", v-model="item.telefone" readonly)
+        p
+            strong Animal: 
+            span(style="cursor:pointer",@click="$emit('showAnimal2', getAnimal )") {{getAnimal.nome}}
 
 </template>
 
@@ -16,6 +18,12 @@
         props:{
             item:{
                 type:Object
+            }
+        },
+        computed:{
+            getAnimal()
+            {
+                return this.item.animal || {}
             }
         }
 	}

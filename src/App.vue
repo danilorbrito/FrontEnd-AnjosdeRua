@@ -1,18 +1,20 @@
 <template lang="pug">
 	#app
 		router-view
+		#snackbar
 
 </template>
 
 <script>
 	export default {
-		name: 'App'
+		name: 'App',
 	}
 </script>
 
 
 <style lang="stylus">
 	@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300')
+	@import url('./styl/Toast.styl')
 
 	*
 		margin 0
@@ -23,6 +25,13 @@
 		background #000 url(./assets/bg.jpg) center center no-repeat 
 		background-attachment fixed
 		background-size cover
+
+	.has-danger small
+		color #C6480A
+		display block
+		font-size .7em
+		font-weight normal
+		display none
 
 	a
 		text-decoration none

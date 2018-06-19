@@ -1,16 +1,16 @@
 <template lang="pug">
-    #form
+    form#formanimal
         h3 Animais
         input(v-show="false", v-model="item.id")
 
         div.d-flex
-            input.m-right(placeholder="Nome", v-model="item.nome")
-            input(placeholder="Raça", v-model="item.raca")
+            input.m-right(type="text",placeholder="Nome", v-model="item.nome", required)
+            input(type="text",placeholder="Raça", v-model="item.raca", required)
 
-        input(placeholder="Descrição", v-model="item.descricao")
+        input(type="text",placeholder="Descrição", v-model="item.descricao", required)
 
         div.d-flex
-            input.m-right(placeholder="Cor", v-model="item.cor")
+            input.m-right(type="text",placeholder="Cor", v-model="item.cor", required)
             input(type="number", min="0", placeholder="Idade", v-model="item.idade")
 
         p.d-flex
@@ -20,26 +20,30 @@
             span Fêmea   
             input(type="radio", name="sexo", value="f", :checked=" item.sexo == 'f' ", v-model="item.sexo"  )
 
-        p(style='text-align:center,cursor:pointer', v-if="item.id && imagens.length == 0", @click="showImages") Carregar Imagens
-
         .uploads(v-if="item.id && imagens.length > 0")
-            div(v-for="i in imagens")
-                img(:src="'http://soriano.esy.es/app/client/assets/imagens/animais/'+i.nome_imagem", width="110")
-                i.material-icons.trash(@click="removeImage(i.id)") close
+            div(v-for="(i,index) in getImagens")
+                img(:src="'http://soriano.esy.es/app/client/assets/imagens/animais/'+i.nome_imagem", width="110", height="86")
+                i.material-icons.trash(@click="removeImage(i.id),imagens.splice(index, 1)") close
 
         form#imagens(enctype="multipart/form-data")
             input(name="id_animal", v-show="false", v-model="item.id")
             input#file(type="file" name="arquivo", v-show="false", @change="uploading")
 
-        label(for="file", v-if="item.id").linkAddImage Adicionar Imagem
+        label(for="file", v-if="item.id && item.adotado!=1")
+            i.material-icons.linkAddImage add_to_photos 
 
-        .btn.success(v-if="!item.id", @click="saveAnimal(item)") Salvar Informações
-        .btn.warning(v-if="item.id", @click="updateAnimal(item)") Atualizar Informações
+        label(v-if="item.id && item.adotado==1", @click="showImages(item.id)")
+            i.material-icons.linkAddImage cached 
+
+        br
+        .btn.success(v-if="!item.id", @click="save") Salvar Informações
+        .btn.warning(v-if="item.id", @click="update") Atualizar Informações
 
 </template>
 
 <script>
     import { mapActions } from 'vuex'
+    import { EventBus } from '../../../helpers/eventBus.js'
 
 	export default {
         name: 'ModalAnimal',
@@ -54,20 +58,14 @@
 			}
         },
         mounted(){
-            let check = setInterval(()=>{
-                if(this.imagens.length > 0)if(this.imagens[0].id_foreign != this.item.id) this.imagens=[]
-            },100)
+            EventBus.$on('openAnimal', id => this.showImages(id))
+            EventBus.$on('closeAnimal', () => this.imagens = [])
         },
 		methods:{
-            ...mapActions([
-                'loadImages',
-                'saveImage',
-                'removeImage',
-                'saveAnimal',
-                'updateAnimal',
-            ]),
-            showImages(){
-                this.loadImages(this.item.id).then(r => this.imagens = r.data.data )
+            ...mapActions(['loadImages','saveImage','removeImage','saveAnimal','updateAnimal']),
+            showImages(id)
+            {
+                this.loadImages(id).then(r => this.imagens = r.data.data)
             },
             uploading(e)
             {
@@ -75,11 +73,47 @@
                 let dados= new FormData(form)
         
                 this.saveImage(dados).then(r => {
-                    this.showImages()
+                    this.showImages(this.item.id)
                     form.reset()
                 })
+            },
+            save()
+            {
+                if( this.willvalidate(document.querySelector("#formanimal")) )
+                {
+                    this.saveAnimal(this.item).then(e=> {
+                        this.toast('Cadastrado com sucesso!')
+                        document.querySelector("#formanimal").reset()
+                        EventBus.$emit('setService','Animais')
+                    })
+                }
+                else this.toast("Informe os campos do formulário")
+            },
+            update()
+            {
+                if( this.willvalidate(document.querySelector("#formanimal")) )
+                {
+                    this.updateAnimal(this.item).then(e=> {
+                        this.toast('Alterado com sucesso!')
+                        document.querySelector("#formanimal").reset()
+                        EventBus.$emit('setService','Animais')
+                    })
+                }
+                else this.toast("Informe os campos do formulário")
+            },
+            toast(message)
+            {
+                let toast = document.getElementById("snackbar")
+                toast.innerText=message
+                toast.classList.add("show")
+                setTimeout( () => toast.classList.remove("show"), 3000)
             }
-		}
+        },
+        computed:{
+            getImagens(){
+                return this.imagens
+            }
+        }
 	}
 </script>
 
@@ -93,27 +127,26 @@
         display flex
         margin auto
         background-color #ededed
-        
-        & img
-            cursor pointer
 
         & .trash 
+            position relative
             cursor pointer
             color red
-            margin-right 15px
-            margin-left -25px
+            top -60px
+            right 25px
+            outline 1px solid red
             font-weight bold
             text-shadow 1px 3px 1px #fff
-
+            z-index 2500
 
     .linkAddImage
-        color blue
-        font-weight bold
+        color #ccc
         cursor pointer
-        font-size 12px
-        margin-top 3px
+        font-size 2em
         margin-bottom 10px
-        display block
+        
+        &:hover
+            color gray
 
     .d-flex
         display flex
@@ -121,5 +154,4 @@
 
     .m-right
         margin-right 10px
-
 </style>

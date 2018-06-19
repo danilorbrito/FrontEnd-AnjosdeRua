@@ -35,7 +35,7 @@
     #acoespromovidas
         padding 5%
         background-color rgba(255,255,255,1)
-        background url(http://www.osmais.com/wallpapers/201508/cachorro-inteligente-wallpaper.jpg) center center no-repeat 
+        background url(../../assets/cao.jpg) center center no-repeat 
         background-attachment fixed
         background-size cover
 
@@ -46,6 +46,7 @@
             text-transform uppercase
             text-shadow 1px 1px 1px #000
             margin-bottom 50px
+            letter-spacing 4px
 
         & section
             width 90%

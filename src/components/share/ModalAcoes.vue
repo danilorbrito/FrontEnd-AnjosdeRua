@@ -3,7 +3,7 @@
         div(:class="{'modal-frame':true, 'state-appear':status}")
             .modal
                 .modal-inset
-                    .button.close(@click="status=false") x
+                    i.material-icons.button.close(@click="status=false") close
                     h1 {{acao.titulo}}
                     .modal-body
                         div(v-html="acao.texto") 
@@ -28,7 +28,7 @@
         },
         name: 'Modal',
         mounted(){
-            EventBus.$on('showAction', acao => {
+            EventBus.$on('openModalAcoes', acao => {
                 this.acao = acao
                 this.status = true
             })

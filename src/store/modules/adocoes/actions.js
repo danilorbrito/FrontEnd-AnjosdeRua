@@ -11,8 +11,11 @@ export default {
 	},
 
 	saveAdocao(context, adocao) {
-		axios.post(`${context.getters.getApi}adocoes`, adocao, context.getters.getToken ).then( resp => {
-			context.dispatch('loadAdocoes')
+		return new Promise( (resolve, reject) => {
+			axios.post(`${context.getters.getApi}adocoes`, adocao, context.getters.getToken ).then( resp => {
+				context.dispatch('loadAdocoes')
+				resolve(resp)
+			})
 		})
 	},
 
@@ -23,8 +26,11 @@ export default {
 	},
 
 	deleteAdocao (context, id) {
-		axios.delete(`${context.getters.getApi}adocoes/${id}`, context.getters.getToken ).then( resp => {
-			context.dispatch('loadAdocoes')
+		return new Promise( (resolve, reject) => {
+			axios.delete(`${context.getters.getApi}adocoes/${id}`, context.getters.getToken ).then( resp => {
+				context.dispatch('loadAdocoes')
+				resolve(resp)
+			})
 		})
 	},
 

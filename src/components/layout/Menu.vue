@@ -17,7 +17,9 @@
                 <input type="hidden" name="currency" value="BRL" />
                 <input type="hidden" name="receiverEmail" value="klerisonpe@gmail.com" />
                 <input type="hidden" name="iot" value="button" />
-                button.link.active Doação
+                button.link.active 
+                    i.material-icons attach_money
+                        span Doar
             </form>
 </template>
 
@@ -40,9 +42,8 @@
         border none
 
     .active
-        background orange 
+        background-color orange 
         border-radius 3px
-        padding 10px
 
     nav#menu
         position fixed

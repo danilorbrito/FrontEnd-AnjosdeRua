@@ -11,7 +11,7 @@
 				ModalDenuncia(v-if="service.id=='Denúncias'", :item="service.item")
 				ModalAdocoes(v-if="service.id=='Adoções'", :item="service.item", @showAssociado="verAssociado", @showAnimal="verAnimal")
 				ModalAcoesPromovidas(v-if="service.id=='Ações promovidas'", :item="service.item")
-				ModalListaEspera(v-if="service.id=='Lista de espera'", :item="service.item")
+				ModalListaEspera(v-if="service.id=='Lista de espera'", :item="service.item", @showAnimal2="verAnimal")
 
 		NavBar(@service="setService")
 		Plataform(:service="service.id", @open="service.item={},service.type='insert',modal=true", :head="dataTable.head", :dados="dataTable.body", @actions="operacao")
@@ -48,11 +48,8 @@
 		},
 		mounted()
 		{
-			let user = {
-				"login":"chefao01",
-				"password":"chefao01"
-			}
-			this.loginUser(user).then(r=> this.setService("Animais"))
+			this.setService("Animais")
+			EventBus.$on('setService', s => this.setService(s) )
 		},
 		methods:{
 			...mapActions(['deleteAnimal','deleteEspera','deleteAssociado','deleteDenuncia','deleteAdocao','deleteAcoesPromovidas']),
@@ -60,6 +57,8 @@
 			{
 				this.modal=false
 				if(this.service.id == 'Adoções')EventBus.$emit('stopInterval')
+				else if(this.service.id == 'Animais')EventBus.$emit('closeAnimal')
+				this.setService(this.service.id)
 			},
 			operacao(type, id)
 			{
@@ -67,12 +66,29 @@
 				{
 					switch(this.service.id)
 					{
-						case 'Animais':this.deleteAnimal(id);break
-						case 'Adoções':this.deleteAdocao(id);break
-						case 'Denúncias':this.deleteDenuncia(id);break
-						case 'Associados':this.deleteAssociado(id);break
-						case 'Ações promovidas':this.deleteAcoesPromovidas(id);break
-						case 'Lista de espera':this.deleteEspera(id);break
+						case 'Animais':
+							this.deleteAnimal(id).then(e=>this.setService(this.service.id))
+						break
+
+						case 'Adoções':
+							this.deleteAdocao(id).then(e=>this.setService(this.service.id))
+						break
+
+						case 'Denúncias':
+							this.deleteDenuncia(id).then(e=>this.setService(this.service.id))
+						break
+
+						case 'Associados':
+							this.deleteAssociado(id).then(e=>this.setService(this.service.id))
+						break
+
+						case 'Ações promovidas':
+							this.deleteAcoesPromovidas(id).then(e=>this.setService(this.service.id))
+						break
+
+						case 'Lista de espera':
+							this.deleteEspera(id).then(e=>this.setService(this.service.id))
+						break
 						default:console.warn("trash desconhecido");break
 					}
 				}
@@ -80,6 +96,7 @@
 				if(type=="read")
 				{
 					if(this.service.id == 'Adoções')EventBus.$emit('initInterval')
+					else if(this.service.id == 'Animais')EventBus.$emit('openAnimal', id)
 					this.service.item = this.dataTable.body.filter( i => i.id == id )[0]
 					this.modal=true
 				}
@@ -97,12 +114,12 @@
 					break
 
 					case 'Adoções':
-						this.dataTable.head = ["Associado", "Animal", "Novas Mensagens"]
+						this.dataTable.head = ["Associado", "Animal", "Data da adoção"]
 						this.loadAdocoes().then( a=> {this.dataTable.body = a;this.loading=false})
 					break
 
 					case 'Denúncias':
-						this.dataTable.head = ["Descrição", "Delator", "Local"]
+						this.dataTable.head = ["Descrição", "Delator", "Id"]
 						this.loadDenuncias().then( d=> {this.dataTable.body = d;this.loading=false})
 					break
 
@@ -112,12 +129,12 @@
 					break
 
 					case 'Ações promovidas':
-						this.dataTable.head = ["Titulo", "Descrição","Data"]
+						this.dataTable.head = ["Titulo", "Descrição","Id"]
 						this.loadAcoesPromovidas().then( a=> {this.dataTable.body = a;this.loading=false})
 					break
 
 					case 'Lista de espera':
-						this.dataTable.head = ["Nome", "Telefone","Descricao"]
+						this.dataTable.head = ["Associado", "Telefone","E-mail"]
 						this.loadEsperas().then( a=> {this.dataTable.body = a;this.loading=false})
 					break
 
@@ -129,12 +146,14 @@
 			},
 			verAssociado( associado )
 			{
+				EventBus.$emit('stopInterval')
 				this.service.id='Associados'
 				this.service.item=associado
 				this.setService("Associados")
 			},
 			verAnimal( animal )
 			{
+				EventBus.$emit('stopInterval')
 				this.service.id='Animais'
 				this.service.item=animal
 				this.setService("Animais")
